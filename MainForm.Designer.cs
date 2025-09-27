@@ -1,0 +1,219 @@
+namespace CinameAsset
+{
+    partial class MainForm
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblTitle = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnWarehouse = new Guna.UI2.WinForms.Guna2Button();
+            this.btnStatistics = new Guna.UI2.WinForms.Guna2Button();
+            this.btnVendors = new Guna.UI2.WinForms.Guna2Button();
+            this.btnInfrastructure = new Guna.UI2.WinForms.Guna2Button();
+            this.panelContent = new Guna.UI2.WinForms.Guna2Panel();
+            this.guna2Panel1.SuspendLayout();
+            this.guna2Panel2.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // guna2Panel1
+            // 
+            this.guna2Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.guna2Panel1.Controls.Add(this.lblTitle);
+            this.guna2Panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.guna2Panel1.Location = new System.Drawing.Point(0, 0);
+            this.guna2Panel1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.guna2Panel1.Name = "guna2Panel1";
+            this.guna2Panel1.Size = new System.Drawing.Size(2000, 138);
+            this.guna2Panel1.TabIndex = 0;
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AutoSize = false;
+            this.lblTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.ForeColor = System.Drawing.Color.White;
+            this.lblTitle.Location = new System.Drawing.Point(14, 45);
+            this.lblTitle.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(626, 71);
+            this.lblTitle.TabIndex = 0;
+            this.lblTitle.Text = "Hệ Thống Quản Lý Tài Sản";
+            this.lblTitle.Click += new System.EventHandler(this.lblTitle_Click);
+            // 
+            // guna2Panel2
+            // 
+            this.guna2Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(52)))), ((int)(((byte)(54)))));
+            this.guna2Panel2.Controls.Add(this.btnWarehouse);
+            this.guna2Panel2.Controls.Add(this.btnStatistics);
+            this.guna2Panel2.Controls.Add(this.btnVendors);
+            this.guna2Panel2.Controls.Add(this.btnInfrastructure);
+            this.guna2Panel2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.guna2Panel2.Location = new System.Drawing.Point(0, 138);
+            this.guna2Panel2.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.guna2Panel2.Name = "guna2Panel2";
+            this.guna2Panel2.Size = new System.Drawing.Size(375, 987);
+            this.guna2Panel2.TabIndex = 1;
+            // 
+            // btnWarehouse
+            // 
+            this.btnWarehouse.BorderRadius = 5;
+            this.btnWarehouse.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnWarehouse.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnWarehouse.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnWarehouse.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnWarehouse.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnWarehouse.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(52)))), ((int)(((byte)(54)))));
+            this.btnWarehouse.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.btnWarehouse.ForeColor = System.Drawing.Color.White;
+            this.btnWarehouse.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.btnWarehouse.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnWarehouse.ImageSize = new System.Drawing.Size(24, 24);
+            this.btnWarehouse.Location = new System.Drawing.Point(0, 276);
+            this.btnWarehouse.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.btnWarehouse.Name = "btnWarehouse";
+            this.btnWarehouse.Padding = new System.Windows.Forms.Padding(34, 0, 0, 0);
+            this.btnWarehouse.Size = new System.Drawing.Size(375, 85);
+            this.btnWarehouse.TabIndex = 3;
+            this.btnWarehouse.Text = "Kho Hàng";
+            this.btnWarehouse.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnWarehouse.Click += new System.EventHandler(this.btnWarehouse_Click);
+            // 
+            // btnStatistics
+            // 
+            this.btnStatistics.BorderRadius = 5;
+            this.btnStatistics.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnStatistics.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnStatistics.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnStatistics.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnStatistics.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnStatistics.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(52)))), ((int)(((byte)(54)))));
+            this.btnStatistics.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.btnStatistics.ForeColor = System.Drawing.Color.White;
+            this.btnStatistics.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.btnStatistics.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnStatistics.ImageSize = new System.Drawing.Size(24, 24);
+            this.btnStatistics.Location = new System.Drawing.Point(0, 184);
+            this.btnStatistics.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.btnStatistics.Name = "btnStatistics";
+            this.btnStatistics.Padding = new System.Windows.Forms.Padding(34, 0, 0, 0);
+            this.btnStatistics.Size = new System.Drawing.Size(375, 92);
+            this.btnStatistics.TabIndex = 2;
+            this.btnStatistics.Text = "Thống Kê Nhập Hàng";
+            this.btnStatistics.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnStatistics.Click += new System.EventHandler(this.btnStatistics_Click);
+            // 
+            // btnVendors
+            // 
+            this.btnVendors.BorderRadius = 5;
+            this.btnVendors.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnVendors.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnVendors.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnVendors.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnVendors.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnVendors.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(52)))), ((int)(((byte)(54)))));
+            this.btnVendors.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.btnVendors.ForeColor = System.Drawing.Color.White;
+            this.btnVendors.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.btnVendors.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnVendors.ImageSize = new System.Drawing.Size(24, 24);
+            this.btnVendors.Location = new System.Drawing.Point(0, 92);
+            this.btnVendors.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.btnVendors.Name = "btnVendors";
+            this.btnVendors.Padding = new System.Windows.Forms.Padding(34, 0, 0, 0);
+            this.btnVendors.Size = new System.Drawing.Size(375, 92);
+            this.btnVendors.TabIndex = 1;
+            this.btnVendors.Text = "Đối Tác";
+            this.btnVendors.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnVendors.Click += new System.EventHandler(this.btnVendors_Click);
+            // 
+            // btnInfrastructure
+            // 
+            this.btnInfrastructure.BorderRadius = 5;
+            this.btnInfrastructure.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnInfrastructure.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnInfrastructure.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnInfrastructure.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnInfrastructure.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnInfrastructure.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.btnInfrastructure.ForeColor = System.Drawing.Color.White;
+            this.btnInfrastructure.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.btnInfrastructure.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnInfrastructure.ImageSize = new System.Drawing.Size(24, 24);
+            this.btnInfrastructure.Location = new System.Drawing.Point(0, 0);
+            this.btnInfrastructure.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.btnInfrastructure.Name = "btnInfrastructure";
+            this.btnInfrastructure.Padding = new System.Windows.Forms.Padding(34, 0, 0, 0);
+            this.btnInfrastructure.Size = new System.Drawing.Size(375, 92);
+            this.btnInfrastructure.TabIndex = 0;
+            this.btnInfrastructure.Text = "Thông Tin Hạ Tầng";
+            this.btnInfrastructure.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnInfrastructure.Click += new System.EventHandler(this.btnInfrastructure_Click);
+            // 
+            // panelContent
+            // 
+            this.panelContent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.panelContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelContent.Location = new System.Drawing.Point(375, 138);
+            this.panelContent.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.panelContent.Name = "panelContent";
+            this.panelContent.Size = new System.Drawing.Size(1625, 987);
+            this.panelContent.TabIndex = 2;
+            // 
+            // MainForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.ClientSize = new System.Drawing.Size(2000, 1125);
+            this.Controls.Add(this.panelContent);
+            this.Controls.Add(this.guna2Panel2);
+            this.Controls.Add(this.guna2Panel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.MaximizeBox = false;
+            this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Hệ Thống Quản Lý Tài Sản Rạp Chiếu Phim";
+            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.guna2Panel1.ResumeLayout(false);
+            this.guna2Panel2.ResumeLayout(false);
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        private Guna.UI2.WinForms.Guna2Panel guna2Panel1;
+        private Guna.UI2.WinForms.Guna2HtmlLabel lblTitle;
+        private Guna.UI2.WinForms.Guna2Panel guna2Panel2;
+        private Guna.UI2.WinForms.Guna2Button btnInfrastructure;
+        private Guna.UI2.WinForms.Guna2Button btnVendors;
+        private Guna.UI2.WinForms.Guna2Button btnStatistics;
+        private Guna.UI2.WinForms.Guna2Button btnWarehouse;
+        private Guna.UI2.WinForms.Guna2Panel panelContent;
+    }
+}

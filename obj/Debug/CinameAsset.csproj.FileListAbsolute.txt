@@ -1,0 +1,46 @@
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\bin\Debug\CinameAsset.exe.config
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\bin\Debug\CinameAsset.exe
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\bin\Debug\CinameAsset.pdb
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\bin\Debug\Guna.UI2.dll
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\bin\Debug\Newtonsoft.Json.dll
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\bin\Debug\Newtonsoft.Json.xml
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.csproj.AssemblyReference.cache
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.MainForm.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.InfrastructureManagement.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.VendorManagement.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.AddVendorForm.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.PurchaseForm.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.PurchaseStatistics.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.BillDetailForm.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.WarehouseManagement.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.AddAssetControl.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.AddSeatControl.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.Properties.Resources.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.csproj.GenerateResource.cache
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.csproj.CoreCompileInputs.cache
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAs.32A49D9C.Up2Date
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.exe
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.pdb
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\bin\Debug\CinameAsset.exe.config
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\bin\Debug\CinameAsset.exe
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\bin\Debug\CinameAsset.pdb
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\bin\Debug\Guna.UI2.dll
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\bin\Debug\Newtonsoft.Json.dll
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\bin\Debug\Newtonsoft.Json.xml
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\obj\Debug\CinameAsset.csproj.AssemblyReference.cache
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\obj\Debug\CinameAsset.MainForm.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\obj\Debug\CinameAsset.InfrastructureManagement.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\obj\Debug\CinameAsset.VendorManagement.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\obj\Debug\CinameAsset.AddVendorForm.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\obj\Debug\CinameAsset.PurchaseForm.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\obj\Debug\CinameAsset.PurchaseStatistics.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\obj\Debug\CinameAsset.BillDetailForm.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\obj\Debug\CinameAsset.WarehouseManagement.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\obj\Debug\CinameAsset.AddAssetControl.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\obj\Debug\CinameAsset.AddSeatControl.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\obj\Debug\CinameAsset.Properties.Resources.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\obj\Debug\CinameAsset.csproj.GenerateResource.cache
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\obj\Debug\CinameAsset.csproj.CoreCompileInputs.cache
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\obj\Debug\CinameAs.32A49D9C.Up2Date
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\obj\Debug\CinameAsset.exe
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset - Copy\obj\Debug\CinameAsset.pdb
