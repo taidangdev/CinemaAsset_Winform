@@ -173,11 +173,7 @@
     <None Include="packages.config" />
     <None Include="App.config" />
     <None Include="README.md" />
-    <Content Include="CREATE_TABLE.sql" />
-    <Content Include="Thongtin_Hatang.sql" />
     <Content Include="thongke.sql" />
-    <Content Include="tonkho.sql" />
-    <Content Include="doitac.sql" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />

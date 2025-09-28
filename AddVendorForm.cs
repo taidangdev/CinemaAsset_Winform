@@ -23,40 +23,50 @@ namespace CinameAsset
             LoadAssetTypes();
         }
 
+
+        public class AssetTypeItem
+        {
+            public int AssetTypeId { get; set; }   // từ [key]
+            public string Display { get; set; }    // từ [display]
+
+            public override string ToString() => Display; // CheckedListBox dùng ToString() để hiển thị
+        }
+
+
         private void LoadAssetTypes()
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (var conn = new SqlConnection(connectionString))
+                using (var cmd = new SqlCommand(
+                    "SELECT [key], [display] FROM dbo.vw_AssetTypes_UI ORDER BY [display];", conn))
                 {
                     conn.Open();
-                    string query = "SELECT asset_type_id, name FROM AssetType ORDER BY name";
-                    
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        SqlDataReader reader = cmd.ExecuteReader();
-                        
                         clbAssetTypes.Items.Clear();
-                        
+
                         while (reader.Read())
                         {
-                            AssetTypeItem item = new AssetTypeItem
+                            var item = new AssetTypeItem
                             {
-                                AssetTypeId = Convert.ToInt32(reader["asset_type_id"]),
-                                Name = reader["name"].ToString()
+                                AssetTypeId = reader.GetInt32(0),              // [key]
+                                Display = reader.GetString(1)              // [display]
                             };
-                            
-                            clbAssetTypes.Items.Add(item);
+
+                            // Add từng item; CheckedListBox sẽ hiển thị theo ToString()
+                            clbAssetTypes.Items.Add(item, false);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi tải danh sách loại hàng: {ex.Message}", "Lỗi", 
+                MessageBox.Show($"Lỗi khi tải danh sách loại hàng: {ex.Message}", "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -150,29 +160,6 @@ namespace CinameAsset
         private void lblAddress_Click(object sender, EventArgs e)
         {
 
-        }
-    }
-
-    public class AssetTypeItem
-    {
-        public int AssetTypeId { get; set; }
-        public string Name { get; set; }
-
-        public override string ToString()
-        {
-            return GetDisplayName(Name);
-        }
-
-        private string GetDisplayName(string assetTypeName)
-        {
-            switch (assetTypeName)
-            {
-                case "SCREEN": return "Màn hình";
-                case "SPEAKER": return "Loa";
-                case "AIR_CON": return "Máy lạnh";
-                case "SEAT": return "Ghế";
-                default: return assetTypeName;
-            }
         }
     }
 }

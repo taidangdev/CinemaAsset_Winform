@@ -1,7 +1,7 @@
 ﻿use CinemaAssetDB
 go
 
--- view hiển thị đối tác còn hợp tác, a
+-- view hiển thị đối tác còn hợp tác
 CREATE OR ALTER VIEW dbo.vw_VendorActiveWithCatalog AS
 SELECT
   v.vendor_id,
@@ -9,12 +9,12 @@ SELECT
   v.phone,
   v.email,
   v.address,
-  STRING_AGG(at.name, N', ') WITHIN GROUP (ORDER BY at.name) AS asset_types
-FROM Vendor v
-LEFT JOIN VendorCatalog vc
+  STRING_AGG(ui.[display], N', ') WITHIN GROUP (ORDER BY ui.[display]) AS asset_types -- đã Việt hoá
+FROM dbo.Vendor v
+LEFT JOIN dbo.VendorCatalog vc
   ON vc.vendor_id = v.vendor_id AND vc.is_active = 1
-LEFT JOIN AssetType at
-  ON at.asset_type_id = vc.asset_type_id
+LEFT JOIN dbo.vw_AssetTypes_UI ui
+  ON ui.[key] = vc.asset_type_id
 WHERE v.is_active = 1
 GROUP BY v.vendor_id, v.name, v.phone, v.email, v.address;
 GO

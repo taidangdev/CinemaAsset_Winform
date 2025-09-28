@@ -36,7 +36,7 @@ namespace CinameAsset
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT vendor_id, name FROM Vendor WHERE is_active = 1 ORDER BY name";
+                    string query = "SELECT vendor_id, name FROM vw_VendorActiveWithCatalog";
                     
                     SqlDataAdapter da = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
@@ -156,6 +156,11 @@ namespace CinameAsset
         private int GetSelectedInt(ComboBox cb)
         {
             return (cb.SelectedValue != null && int.TryParse(cb.SelectedValue.ToString(), out var v)) ? v : -1;
+        }
+
+        private void guna2Panel3_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

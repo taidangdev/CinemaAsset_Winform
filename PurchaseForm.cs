@@ -32,7 +32,7 @@ namespace CinameAsset
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT vendor_id, name FROM Vendor WHERE is_active = 1 ORDER BY name";
+                    string query = "SELECT vendor_id, name FROM dbo.vw_VendorActiveWithCatalog";
                     
                     SqlDataAdapter da = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
@@ -81,11 +81,10 @@ namespace CinameAsset
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = @"SELECT at.asset_type_id, at.name 
-                                   FROM vw_VendorCatalogActive vca
-                                   JOIN AssetType at ON at.asset_type_id = vca.asset_type_id
-                                   WHERE vca.vendor_id = @vendor_id
-                                   ORDER BY at.name";
+                    string query = @"SELECT asset_type_id, asset_type_display AS [display]
+                                        FROM dbo.vw_VendorCatalogActive
+                                        WHERE vendor_id = @vendor_id
+                                        ORDER BY asset_type_display;";
                     
                     SqlDataAdapter da = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
@@ -95,27 +94,12 @@ namespace CinameAsset
                     // Thêm placeholder
                     var r = dt.NewRow();
                     r["asset_type_id"] = -1;
-                    r["name"] = "-- Chọn loại thiết bị --";
-                    dt.Rows.InsertAt(r, 0);
-                    
-                    // Thêm cột display_text
-                    dt.Columns.Add("display_text", typeof(string));
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        if (i == 0)
-                        {
-                            dt.Rows[i]["display_text"] = "-- Chọn loại thiết bị --";
-                        }
-                        else
-                        {
-                            string assetTypeName = dt.Rows[i]["name"].ToString();
-                            dt.Rows[i]["display_text"] = GetAssetTypeDisplayName(assetTypeName);
-                        }
-                    }
+                    r["display"] = "-- Chọn loại thiết bị --";
+                    dt.Rows.InsertAt(r, 0);         
                     
                     // Gán datasource
                     cmbAssetType.DataSource = dt;
-                    cmbAssetType.DisplayMember = "display_text";
+                    cmbAssetType.DisplayMember = "display";
                     cmbAssetType.ValueMember = "asset_type_id";
                     cmbAssetType.DropDownStyle = ComboBoxStyle.DropDownList;
                     
@@ -126,18 +110,6 @@ namespace CinameAsset
             {
                 MessageBox.Show($"Lỗi khi tải danh sách loại thiết bị: {ex.Message}", "Lỗi", 
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private string GetAssetTypeDisplayName(string assetTypeName)
-        {
-            switch (assetTypeName)
-            {
-                case "SCREEN": return "Màn hình";
-                case "SPEAKER": return "Loa";
-                case "AIR_CON": return "Máy lạnh";
-                case "SEAT": return "Ghế";
-                default: return assetTypeName;
             }
         }
 

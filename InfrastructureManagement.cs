@@ -19,6 +19,7 @@ namespace CinameAsset
             this.cmbAuditorium.SelectionChangeCommitted += cmbAuditorium_SelectionChangeCommitted;
             this.cmbAssetType.SelectionChangeCommitted += cmbAssetType_SelectionChangeCommitted;
             cmbAuditorium.DropDownStyle = ComboBoxStyle.DropDownList;
+            CacheSeatTypeId();
 
         }
         // Cờ chặn event khi đang bind
@@ -37,11 +38,26 @@ namespace CinameAsset
             LoadAssets();
         }
 
+
+        //lấy id của ghế trong bảng assetType
+        private int _seatTypeId = -1;
+
+        private void CacheSeatTypeId()
+        {
+            using (var conn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand("SELECT asset_type_id FROM AssetType WHERE name = N'SEAT';", conn))
+            {
+                conn.Open();
+                var obj = cmd.ExecuteScalar();
+                if (obj != null) _seatTypeId = Convert.ToInt32(obj);
+            }
+        }
+
+
         private void cmbAssetType_SelectionChangeCommitted(object sender, EventArgs e)
         {
             if (_isBinding) return;
-            var key = cmbAssetType.SelectedValue?.ToString(); // "", "SEAT", "SCREEN", ...
-            if (string.IsNullOrEmpty(key)) { dgvAssets.Rows.Clear(); return; }
+            if (GetSelectedInt(cmbAssetType) == -1) { dgvAssets.Rows.Clear(); return; }
             if (GetSelectedInt(cmbAuditorium) == -1) { dgvAssets.Rows.Clear(); return; }
             LoadAssets();
         }
@@ -52,6 +68,8 @@ namespace CinameAsset
             LoadAuditoriums();
             LoadAssetTypes();
             LoadAssets();
+            dgvAssets.Columns["colInstalledAt"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
+
         }
 
         private void LoadAuditoriums()
@@ -96,27 +114,20 @@ namespace CinameAsset
                 _isBinding = true;
 
                 using (var conn = new SqlConnection(connectionString))
-                using (var cmd = new SqlCommand("SELECT asset_type_id, name FROM AssetType ORDER BY name", conn))
+                using (var cmd = new SqlCommand("SELECT * FROM dbo.vw_AssetTypes_UI ORDER BY [display];", conn))
                 {
                     conn.Open();
                     using (var rd = cmd.ExecuteReader())
                     {
                         var dt = new DataTable();
-                        dt.Columns.Add("key", typeof(string));   // ValueMember
-                        dt.Columns.Add("display", typeof(string)); // DisplayMember
+                        dt.Load(rd);
 
                         // placeholder
-                        dt.Rows.Add(string.Empty, "-- Chọn loại thiết bị --");
-                        // ghế (SEAT) là 1 tab riêng
-                        dt.Rows.Add("SEAT", "Ghế");
+                        var row = dt.NewRow();
+                        row["key"] = -1;
+                        row["display"] = "-- Chọn loại thiết bị --";
+                        dt.Rows.InsertAt(row, 0);
 
-                        while (rd.Read())
-                        {
-                            var raw = rd["name"]?.ToString();
-                            if (string.IsNullOrEmpty(raw) || raw == "SEAT") continue;
-
-                            dt.Rows.Add(raw, GetAssetTypeDisplayName(raw)); // key=raw (SCREEN...), display=Việt hoá
-                        }
 
                         cmbAssetType.DataSource = null;
                         cmbAssetType.DisplayMember = "display";
@@ -139,25 +150,13 @@ namespace CinameAsset
             }
         }
 
-        private string GetAssetTypeDisplayName(string assetTypeName)
-        {
-            switch (assetTypeName)
-            {
-                case "SCREEN": return "Màn hình";
-                case "SPEAKER": return "Loa";
-                case "AIR_CON": return "Máy lạnh";
-                case "SEAT": return "Ghế";
-                default: return assetTypeName;
-            }
-        }
-
         private void LoadAssets()
         {
             
             int auditoriumId = GetSelectedInt(cmbAuditorium);
-            string typeKey = cmbAssetType.SelectedValue?.ToString();
+           int typeId = GetSelectedInt(cmbAssetType);
 
-            if (auditoriumId == -1 || string.IsNullOrEmpty(typeKey))
+            if (auditoriumId == -1 || typeId == -1)
             {
                 dgvAssets.Rows.Clear();
                 return;
@@ -165,41 +164,15 @@ namespace CinameAsset
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (var conn = new SqlConnection(connectionString))
                 {
-                    conn.Open();
-
-                    string query = (typeKey == "SEAT")
-                        ? @"SELECT 
-                        s.seat_id as asset_id,
-                        at.name as asset_type_name,
-                        CONCAT(s.seat_row, s.seat_pos) as unit_no,
-                        s.status,
-                        NULL as installed_at,
-                        'SEAT' as asset_type
-                    FROM Seat s
-                    JOIN AssetType at ON at.asset_type_id = s.asset_type_id
-                    WHERE s.auditorium_id = @auditorium_id
-                    ORDER BY s.seat_row, s.seat_pos"
-                        : @"SELECT 
-                        a.asset_id,
-                        at.name as asset_type_name,
-                        a.unit_no,
-                        a.status,
-                        a.installed_at,
-                        'ASSET' as asset_type
-                    FROM Asset a
-                    JOIN AssetType at ON at.asset_type_id = a.asset_type_id
-                    WHERE a.auditorium_id = @auditorium_id 
-                      AND at.name = @asset_type
-                    ORDER BY a.unit_no";
-
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    using(var cmd = new SqlCommand("dbo.sp_RoomAssets",conn))
                     {
-                        cmd.Parameters.AddWithValue("@auditorium_id", auditoriumId);
-                        if (typeKey != "SEAT")
-                            cmd.Parameters.AddWithValue("@asset_type", typeKey);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@auditorium_id",SqlDbType.Int).Value=auditoriumId;
+                        cmd.Parameters.Add("@asset_type_id",SqlDbType.Int).Value = typeId;
 
+                        conn.Open();
                         using (var reader = cmd.ExecuteReader())
                         {
                             dgvAssets.Rows.Clear();
@@ -209,12 +182,13 @@ namespace CinameAsset
                                 int rowIndex = dgvAssets.Rows.Add();
                                 var row = dgvAssets.Rows[rowIndex];
 
+                                // Các cột lấy từ proc
                                 row.Cells["colAssetId"].Value = reader["asset_id"];
-                                row.Cells["colAssetType"].Value = GetAssetTypeDisplayName(reader["asset_type_name"].ToString());
+                                row.Cells["colAssetType"].Value = reader["asset_type_display"]?.ToString(); // tên Việt hoá từ view UI
                                 row.Cells["colUnitNo"].Value = reader["unit_no"]?.ToString();
 
                                 string status = reader["status"]?.ToString();
-                                row.Cells["colStatus"].Value = status == "OK" ? "Hoạt động" : "Hỏng";
+                                row.Cells["colStatus"].Value = (status == "OK") ? "Hoạt động" : "Hỏng";
 
                                 if (status == "BROKEN")
                                 {
@@ -230,18 +204,22 @@ namespace CinameAsset
                                 if (reader["installed_at"] != DBNull.Value)
                                 {
                                     DateTime installedAt = Convert.ToDateTime(reader["installed_at"]);
-                                    row.Cells["colInstalledAt"].Value = installedAt.ToString("dd/MM/yyyy HH:mm");
+                                    //row.Cells["colInstalledAt"].Value = installedAt.ToString("dd/MM/yyyy HH:mm");
+                                    row.Cells["colInstalledAt"].Value = installedAt;
                                 }
                                 else
                                 {
                                     row.Cells["colInstalledAt"].Value = "N/A";
                                 }
 
-                                row.Tag = reader["asset_type"]?.ToString(); // "SEAT"/"ASSET"
+                                // kind: "SEAT" hoặc "ASSET" để biết loại record
+                                row.Tag = reader["kind"]?.ToString();
                             }
                         }
-                    }
+                    }                                                                         
                 }
+               
+                
             }
             catch (Exception ex)
             {
@@ -292,7 +270,7 @@ namespace CinameAsset
                 return;
             }
 
-            AddSeatControl addSeatControl = new AddSeatControl(auditoriumId, connectionString);
+            AddSeatControl addSeatControl = new AddSeatControl(auditoriumId,connectionString, _seatTypeId);
             addSeatControl.SeatAdded += (s, args) => LoadAssets(); // Refresh danh sách sau khi thêm
 
             Form addSeatForm = new Form

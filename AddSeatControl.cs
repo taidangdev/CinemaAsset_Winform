@@ -10,14 +10,16 @@ namespace CinameAsset
     {
         private int auditoriumId;
         private string connectionString;
-        
+        private readonly int seatTypeId;
+
         public event EventHandler SeatAdded;
 
-        public AddSeatControl(int auditoriumId, string connectionString)
+        public AddSeatControl(int auditoriumId, string connectionString, int seatTypeId)
         {
             InitializeComponent();
             this.auditoriumId = auditoriumId;
             this.connectionString = connectionString;
+            this.seatTypeId = seatTypeId;
         }
 
         private void AddSeatControl_Load(object sender, EventArgs e)
@@ -30,27 +32,21 @@ namespace CinameAsset
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (var conn = new SqlConnection(connectionString))
+                using (var cmd = new SqlCommand("dbo.sp_Auditorium_GetName", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@auditorium_id", SqlDbType.Int).Value = auditoriumId;
                     conn.Open();
-                    string query = "SELECT name FROM Auditorium WHERE auditorium_id = @auditorium_id";
-                    
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@auditorium_id", auditoriumId);
-                        object result = cmd.ExecuteScalar();
-                        
-                        if (result != null)
-                        {
-                            lblAuditoriumName.Text = result.ToString();
-                        }
-                    }
+                    var result = cmd.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                        label4.Text = result.ToString();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi tải tên phòng chiếu: {ex.Message}", "Lỗi", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Lỗi khi tải tên phòng chiếu: {ex.Message}",
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -58,40 +54,33 @@ namespace CinameAsset
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (var conn = new SqlConnection(connectionString))
+                using (var cmd = new SqlCommand("dbo.sp_Warehouse_GetStockByType", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@asset_type_id", SqlDbType.Int).Value = seatTypeId;
+
                     conn.Open();
-                    
-                    // Lấy số lượng ghế trong kho
-                    string query = @"SELECT ISNULL(w.stock_qty, 0) as stock_qty
-                                   FROM AssetType at
-                                   LEFT JOIN Warehouse w ON w.asset_type_id = at.asset_type_id
-                                   WHERE at.name = 'SEAT'";
-                    
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    var result = cmd.ExecuteScalar();
+                    int stockQty = (result == null || result == DBNull.Value) ? 0 : Convert.ToInt32(result);
+
+                    lblStockInfo.Text = $"Tồn kho: {stockQty} ghế";
+                    numQuantity.Maximum = Math.Min(stockQty, 100);
+
+                    bool outOfStock = stockQty <= 0;
+                    numQuantity.Enabled = !outOfStock;
+                    btnAdd.Enabled = !outOfStock;
+                    if (outOfStock)
                     {
-                        object result = cmd.ExecuteScalar();
-                        int stockQty = result != null ? Convert.ToInt32(result) : 0;
-                        
-                        lblStockInfo.Text = $"Tồn kho: {stockQty} ghế";
-                        
-                        // Cập nhật max value cho NumericUpDown
-                        numQuantity.Maximum = Math.Min(stockQty, 100); // Tối đa 100 ghế hoặc số tồn kho
-                        
-                        if (stockQty == 0)
-                        {
-                            numQuantity.Enabled = false;
-                            btnAdd.Enabled = false;
-                            lblStockInfo.ForeColor = System.Drawing.Color.Red;
-                            lblStockInfo.Text += " - Không đủ ghế trong kho!";
-                        }
+                        lblStockInfo.ForeColor = System.Drawing.Color.Red;
+                        lblStockInfo.Text += " - Không đủ ghế trong kho!";
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi tải thông tin tồn kho: {ex.Message}", "Lỗi", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Lỗi khi tải thông tin tồn kho: {ex.Message}",
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -99,33 +88,27 @@ namespace CinameAsset
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (var conn = new SqlConnection(connectionString))
+                using (var cmd = new SqlCommand("dbo.sp_Auditorium_AddSeats_Auto", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@auditorium_id", SqlDbType.Int).Value = auditoriumId;
+                    cmd.Parameters.Add("@qty", SqlDbType.Int).Value = quantity;
+
                     conn.Open();
-                    
-                    using (SqlCommand cmd = new SqlCommand("sp_Auditorium_AddSeats_Auto", conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@auditorium_id", auditoriumId);
-                        cmd.Parameters.AddWithValue("@qty", quantity);
-                        
-                        cmd.ExecuteNonQuery();
-                        
-                        MessageBox.Show($"Đã thêm {quantity} ghế thành công!", "Thông báo", 
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        
-                        // Trigger event để form cha refresh danh sách
-                        SeatAdded?.Invoke(this, EventArgs.Empty);
-                        
-                        // Đóng form
-                        this.ParentForm?.Close();
-                    }
+                    cmd.ExecuteNonQuery();
+
+                    MessageBox.Show($"Đã thêm {quantity} ghế thành công!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    SeatAdded?.Invoke(this, EventArgs.Empty);
+                    this.ParentForm?.Close();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi thêm ghế: {ex.Message}", "Lỗi", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Lỗi khi thêm ghế: {ex.Message}",
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -164,6 +147,11 @@ namespace CinameAsset
             // Cập nhật thông tin khi thay đổi số lượng
             int quantity = (int)numQuantity.Value;
             lblQuantityInfo.Text = $"Sẽ thêm {quantity} ghế";
+        }
+
+        private void lblTitle_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
