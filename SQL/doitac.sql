@@ -23,15 +23,24 @@ GO
 --View (bảng hàng) để bind combobox/chi tiết: Vendor ↔ AssetType (dạng dòng)
 CREATE OR ALTER VIEW dbo.vw_VendorCatalogActive AS
 SELECT
-  v.vendor_id, v.name AS vendor_name,
-  at.asset_type_id, at.name AS asset_type_name
-FROM Vendor v
-JOIN VendorCatalog vc
+  v.vendor_id,
+  v.name AS vendor_name,
+  at.asset_type_id,
+  at.name AS asset_type_name,      -- mã gốc (SCREEN, ...)
+  ui.[display] AS asset_type_display -- tên Việt hoá
+FROM dbo.Vendor v
+JOIN dbo.VendorCatalog vc
   ON vc.vendor_id = v.vendor_id AND vc.is_active = 1
-JOIN AssetType at
+JOIN dbo.AssetType at
   ON at.asset_type_id = vc.asset_type_id
+JOIN dbo.vw_AssetTypes_UI ui
+  ON ui.[key] = at.asset_type_id
 WHERE v.is_active = 1;
 GO
+
+select * from dbo.vw_VendorActiveWithCatalog
+select * from dbo.vw_VendorCatalogActive
+
 
 --TVF: lấy danh sách loại hàng 1 vendor (dễ dùng trong SELECT có tham số)
 CREATE OR ALTER FUNCTION dbo.fn_VendorAssetTypes(@vendor_id INT)
