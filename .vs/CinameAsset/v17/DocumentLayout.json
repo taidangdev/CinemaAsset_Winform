@@ -3,20 +3,24 @@
   "WorkspaceRootPath": "D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{12345678-1234-1234-1234-123456789012}|CinameAsset.csproj|d:\\study\\nam3\\dbms\\project_final\\cinameasset\\billdetailform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{12345678-1234-1234-1234-123456789012}|CinameAsset.csproj|solutionrelative:billdetailform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{12345678-1234-1234-1234-123456789012}|CinameAsset.csproj|D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\warehousemanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12345678-1234-1234-1234-123456789012}|CinameAsset.csproj|solutionrelative:warehousemanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{12345678-1234-1234-1234-123456789012}|CinameAsset.csproj|d:\\study\\nam3\\dbms\\project_final\\cinameasset\\billdetailform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{12345678-1234-1234-1234-123456789012}|CinameAsset.csproj|solutionrelative:billdetailform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{12345678-1234-1234-1234-123456789012}|CinameAsset.csproj|d:\\study\\nam3\\dbms\\project_final\\cinameasset\\warehousemanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{12345678-1234-1234-1234-123456789012}|CinameAsset.csproj|solutionrelative:warehousemanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{12345678-1234-1234-1234-123456789012}|CinameAsset.csproj|d:\\study\\nam3\\dbms\\project_final\\cinameasset\\purchasestatistics.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{12345678-1234-1234-1234-123456789012}|CinameAsset.csproj|D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\purchasestatistics.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{12345678-1234-1234-1234-123456789012}|CinameAsset.csproj|solutionrelative:purchasestatistics.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{12345678-1234-1234-1234-123456789012}|CinameAsset.csproj|d:\\study\\nam3\\dbms\\project_final\\cinameasset\\purchasestatistics.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{12345678-1234-1234-1234-123456789012}|CinameAsset.csproj|solutionrelative:purchasestatistics.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{12345678-1234-1234-1234-123456789012}|CinameAsset.csproj|D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\infrastructuremanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12345678-1234-1234-1234-123456789012}|CinameAsset.csproj|solutionrelative:infrastructuremanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12345678-1234-1234-1234-123456789012}|CinameAsset.csproj|D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\infrastructuremanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{12345678-1234-1234-1234-123456789012}|CinameAsset.csproj|solutionrelative:infrastructuremanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
   "DocumentGroupContainers": [
@@ -47,40 +51,27 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "BillDetailForm.cs",
-              "DocumentMoniker": "D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\BillDetailForm.cs",
-              "RelativeDocumentMoniker": "BillDetailForm.cs",
-              "ToolTip": "D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\BillDetailForm.cs",
-              "RelativeToolTip": "BillDetailForm.cs",
-              "ViewState": "AgIAADIAAAAAAAAAAAAgwAwAAAA1AAAAAAAAAA==",
+              "Title": "WarehouseManagement.cs",
+              "DocumentMoniker": "D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\WarehouseManagement.cs",
+              "RelativeDocumentMoniker": "WarehouseManagement.cs",
+              "ToolTip": "D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\WarehouseManagement.cs",
+              "RelativeToolTip": "WarehouseManagement.cs",
+              "ViewState": "AgIAAJMAAAAAAAAAAAA5wJwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-28T20:36:48.736Z",
+              "WhenOpened": "2025-09-29T09:38:54.871Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "BillDetailForm.cs [Design]",
-              "DocumentMoniker": "D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\BillDetailForm.cs",
-              "RelativeDocumentMoniker": "BillDetailForm.cs",
-              "ToolTip": "D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\BillDetailForm.cs [Design]",
-              "RelativeToolTip": "BillDetailForm.cs [Design]",
+              "Title": "WarehouseManagement.cs [Design]",
+              "DocumentMoniker": "D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\WarehouseManagement.cs",
+              "RelativeDocumentMoniker": "WarehouseManagement.cs",
+              "ToolTip": "D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\WarehouseManagement.cs [Design]",
+              "RelativeToolTip": "WarehouseManagement.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-28T20:36:45.526Z",
+              "WhenOpened": "2025-09-29T09:38:51.366Z",
               "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "PurchaseStatistics.cs",
-              "DocumentMoniker": "D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\PurchaseStatistics.cs",
-              "RelativeDocumentMoniker": "PurchaseStatistics.cs",
-              "ToolTip": "D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\PurchaseStatistics.cs",
-              "RelativeToolTip": "PurchaseStatistics.cs",
-              "ViewState": "AgIAAHcAAAAAAAAAAIAwwIcAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-28T20:18:12.758Z",
-              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -91,8 +82,30 @@
               "ToolTip": "D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\PurchaseStatistics.cs [Design]",
               "RelativeToolTip": "PurchaseStatistics.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-28T20:17:47.401Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2025-09-29T09:38:47.959Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "InfrastructureManagement.cs",
+              "DocumentMoniker": "D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\InfrastructureManagement.cs",
+              "RelativeDocumentMoniker": "InfrastructureManagement.cs",
+              "ToolTip": "D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\InfrastructureManagement.cs",
+              "RelativeToolTip": "InfrastructureManagement.cs",
+              "ViewState": "AgIAAJIBAAAAAAAAAAAUwJQBAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-29T01:58:26.397Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "InfrastructureManagement.cs [Design]",
+              "DocumentMoniker": "D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\InfrastructureManagement.cs",
+              "RelativeDocumentMoniker": "InfrastructureManagement.cs",
+              "ToolTip": "D:\\STUDY\\NAM3\\DBMS\\PROJECT_FINAL\\CinameAsset\\InfrastructureManagement.cs [Design]",
+              "RelativeToolTip": "InfrastructureManagement.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-29T01:58:22.71Z"
             }
           ]
         }

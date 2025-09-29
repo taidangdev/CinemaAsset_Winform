@@ -15,7 +15,7 @@ SELECT
   CAST(CASE 
         WHEN w.min_stock = 0 THEN 100.0
         ELSE 100.0 * w.stock_qty / NULLIF(w.min_stock,0)
-      END AS DECIMAL(5,2)) AS pct_of_min
+      END AS DECIMAL(20,2)) AS pct_of_min
 FROM Warehouse w
 JOIN AssetType at ON at.asset_type_id = w.asset_type_id;
 GO
@@ -80,4 +80,6 @@ BEGIN
     ORDER BY at.name, v.name;
 END
 GO
+
+
 

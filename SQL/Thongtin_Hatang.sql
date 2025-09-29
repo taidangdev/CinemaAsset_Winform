@@ -348,6 +348,71 @@ BEGIN
 END
 GO
 
+-- xóa ghế
+CREATE OR ALTER PROCEDURE dbo.sp_Seat_Delete
+  @seat_id INT
+AS
+BEGIN
+  SET NOCOUNT ON;
+  SET XACT_ABORT ON;
+
+  DECLARE @atype INT, @st VARCHAR(20);
+
+  -- Lấy loại ghế và trạng thái hiện tại
+  SELECT @atype = asset_type_id, @st = status
+  FROM dbo.Seat
+  WHERE seat_id = @seat_id;
+
+  IF @atype IS NULL
+  BEGIN
+    RAISERROR(N'Ghế không tồn tại.', 16, 1);
+    RETURN;
+  END
+
+  -- Chỉ cần khóa kho nếu ghế đang OK (sẽ trả về kho)
+  IF @st = 'OK'
+    EXEC sys.sp_getapplock
+         @Resource    = N'WAREHOUSE_LOCK',
+         @LockMode    = N'Exclusive',
+         @LockOwner   = N'Session',
+         @LockTimeout = 10000;
+
+  BEGIN TRY
+    BEGIN TRAN;
+
+      -- Nếu ghế OK -> trả kho 1 chiếc
+      IF @st = 'OK'
+      BEGIN
+        MERGE dbo.Warehouse AS w
+        USING (SELECT @atype AS asset_type_id, 1 AS cnt) AS s
+          ON w.asset_type_id = s.asset_type_id
+        WHEN MATCHED THEN
+          UPDATE SET w.stock_qty = w.stock_qty + s.cnt
+        WHEN NOT MATCHED THEN
+          INSERT (asset_type_id, stock_qty, min_stock)
+          VALUES (s.asset_type_id, s.cnt, 0);
+      END
+
+      -- Xóa ghế
+      DELETE FROM dbo.Seat WHERE seat_id = @seat_id;
+
+    COMMIT;
+
+    -- Kết quả trả về cho UI
+    SELECT 
+      'REMOVED' AS status, 
+      @seat_id  AS seat_id, 
+      returned_to_warehouse = CASE WHEN @st = 'OK' THEN 1 ELSE 0 END;
+  END TRY
+  BEGIN CATCH
+    IF @@TRANCOUNT > 0 ROLLBACK;
+    DECLARE @m NVARCHAR(4000) = ERROR_MESSAGE();
+    RAISERROR(@m, 16, 1);
+  END CATCH
+END
+GO
+
+
 -- LẤY TỒN KHO THEO LOẠI 
 CREATE OR ALTER PROCEDURE dbo.sp_Warehouse_GetStockByType
     @asset_type_id INT

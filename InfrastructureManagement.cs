@@ -209,11 +209,12 @@ namespace CinameAsset
                                 }
                                 else
                                 {
-                                    row.Cells["colInstalledAt"].Value = "N/A";
+                                    row.Cells["colInstalledAt"].Value = null;
                                 }
 
                                 // kind: "SEAT" hoặc "ASSET" để biết loại record
-                                row.Tag = reader["kind"]?.ToString();
+                                // Lưu asset_type_id (int) vào Tag để xử lý sau
+                                row.Tag = typeId;
                             }
                         }
                     }                                                                         
@@ -296,7 +297,7 @@ namespace CinameAsset
 
             DataGridViewRow row = dgvAssets.Rows[e.RowIndex];
             int assetId = Convert.ToInt32(row.Cells["colAssetId"].Value);
-            string assetType = row.Tag?.ToString();
+            int assetType = Convert.ToInt32(row.Tag);
             string currentStatus = row.Cells["colStatus"].Value.ToString();
 
             if (e.ColumnIndex == dgvAssets.Columns["colEdit"].Index)
@@ -311,7 +312,7 @@ namespace CinameAsset
             }
         }
 
-        private void UpdateAssetStatus(int assetId, string assetType, string currentStatus)
+        private void UpdateAssetStatus(int assetId, int assetType, string currentStatus)
         {
             try
             {
@@ -331,7 +332,7 @@ namespace CinameAsset
                         {
                             try
                             {
-                                string procedureName = assetType == "SEAT"
+                                string procedureName = assetType == _seatTypeId
                                     ? (currentStatus == "Hoạt động" ? "sp_Seat_MarkBroken" : "sp_Seat_ReplaceFromWarehouse")
                                     : (currentStatus == "Hoạt động" ? "sp_Asset_MarkBroken" : "sp_Asset_ReplaceFromWarehouse");
 
@@ -339,7 +340,7 @@ namespace CinameAsset
                                 {
                                     cmd.CommandType = CommandType.StoredProcedure;
                                     cmd.Parameters.AddWithValue(
-                                        assetType == "SEAT" ? "@seat_id" : "@asset_id", 
+                                        assetType ==  _seatTypeId ? "@seat_id" : "@asset_id", 
                                         assetId
                                     );
                                     cmd.ExecuteNonQuery();
@@ -366,7 +367,7 @@ namespace CinameAsset
             }
         }
 
-        private void DeleteAsset(int assetId, string assetType)
+        private void DeleteAsset(int assetId, int assetType)
         {
             try
             {
@@ -383,15 +384,15 @@ namespace CinameAsset
                         {
                             try
                             {
-                                string query = assetType == "SEAT"
+                                string query = assetType ==_seatTypeId
                                     ? "sp_Seat_Delete"
-                                    : "sp_Asset_Delete";
+                                    : "sp_Auditorium_RemoveAsset";
 
                                 using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
                                 {
                                     cmd.CommandType = CommandType.StoredProcedure;
                                     cmd.Parameters.AddWithValue(
-                                        assetType == "SEAT" ? "@seat_id" : "@asset_id", 
+                                        assetType == _seatTypeId ? "@seat_id" : "@asset_id", 
                                         assetId
                                     );
                                     cmd.ExecuteNonQuery();
