@@ -16,6 +16,7 @@ namespace CinameAsset
             this.txtUsername = new System.Windows.Forms.TextBox();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.btnLogin = new System.Windows.Forms.Button();
+            this.btnRegister = new System.Windows.Forms.Button();
             this.lblUsername = new System.Windows.Forms.Label();
             this.lblPassword = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
@@ -64,7 +65,7 @@ namespace CinameAsset
             this.btnLogin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(162)))), ((int)(((byte)(235)))));
             this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogin.ForeColor = System.Drawing.Color.White;
-            this.btnLogin.Location = new System.Drawing.Point(150, 200);
+            this.btnLogin.Location = new System.Drawing.Point(80, 200);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(100, 35);
             this.btnLogin.TabIndex = 5;
@@ -72,11 +73,24 @@ namespace CinameAsset
             this.btnLogin.UseVisualStyleBackColor = false;
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             
+            // btnRegister
+            this.btnRegister.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnRegister.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRegister.ForeColor = System.Drawing.Color.White;
+            this.btnRegister.Location = new System.Drawing.Point(220, 200);
+            this.btnRegister.Name = "btnRegister";
+            this.btnRegister.Size = new System.Drawing.Size(100, 35);
+            this.btnRegister.TabIndex = 6;
+            this.btnRegister.Text = "Đăng ký";
+            this.btnRegister.UseVisualStyleBackColor = false;
+            this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
+            
             // LoginForm
             this.AcceptButton = this.btnLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(400, 280);
+            this.Controls.Add(this.btnRegister);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.lblPassword);
@@ -96,6 +110,7 @@ namespace CinameAsset
         private System.Windows.Forms.TextBox txtUsername;
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Button btnLogin;
+        private System.Windows.Forms.Button btnRegister;
         private System.Windows.Forms.Label lblUsername;
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.Label lblTitle;
@@ -174,11 +189,20 @@ namespace CinameAsset
 
         private void txtPassword_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Nhấn Enter để đăng nhập
             if (e.KeyChar == (char)Keys.Enter)
             {
                 btnLogin_Click(sender, e);
             }
+        }
+
+        private void btnRegister_Click(object sender, EventArgs e)
+        {
+            // Ẩn LoginForm và hiển thị RegisterForm
+            this.Hide();
+            
+            RegisterForm registerForm = new RegisterForm();
+            registerForm.FormClosed += (s, args) => this.Show(); // Quay lại LoginForm khi RegisterForm đóng
+            registerForm.Show();
         }
 
         private void LoginForm_Load(object sender, EventArgs e)

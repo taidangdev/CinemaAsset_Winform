@@ -154,6 +154,8 @@ GRANT EXECUTE ON OBJECT::dbo.sp_CreateUserAccount TO [Admin];
 -- Cả hai Role cần quyền thực thi hàm đăng nhập
 GRANT EXECUTE ON OBJECT::dbo.fn_Login TO [Admin], [Staff];
 GO
+--cho phép admin xóa 
+GRANT EXECUTE ON OBJECT::dbo.sp_DeleteUserAccount_WithLogin TO [Admin];
 
 
 
@@ -242,4 +244,47 @@ BEGIN
     -- Trả về tên Role hoặc thông báo lỗi
     RETURN ISNULL(@roleName, N'Đăng nhập thất bại');
 END;
+GO
+
+------------------------------------------------------
+-- PROCEDURE XÓA TÀI KHOẢN (sp_DeleteUserAccount_WithLogin)
+------------------------------------------------------
+CREATE OR ALTER PROCEDURE sp_DeleteUserAccount_WithLogin
+    @Username NVARCHAR(50)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    BEGIN TRY
+        BEGIN TRANSACTION;
+        
+        -- 1. Xóa record trong bảng Accounts
+        DELETE FROM dbo.Accounts WHERE username = @Username;
+        
+        -- 2. Xóa SQL Login (nếu tồn tại)
+        IF EXISTS (SELECT 1 FROM sys.server_principals WHERE name = @Username AND type = 'S')
+        BEGIN
+            DECLARE @DropLoginSQL NVARCHAR(MAX);
+            SET @DropLoginSQL = N'DROP LOGIN [' + @Username + N']';
+            EXEC sp_executesql @DropLoginSQL;
+        END
+        
+        -- 3. Xóa Database User (nếu tồn tại)
+        IF EXISTS (SELECT 1 FROM sys.database_principals WHERE name = @Username AND type = 'S')
+        BEGIN
+            DECLARE @DropUserSQL NVARCHAR(MAX);
+            SET @DropUserSQL = N'DROP USER [' + @Username + N']';
+            EXEC sp_executesql @DropUserSQL;
+        END
+        
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
+        
+        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+        RAISERROR(@ErrorMessage, 16, 1);
+    END CATCH
+END
 GO

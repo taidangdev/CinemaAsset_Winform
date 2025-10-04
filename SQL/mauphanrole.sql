@@ -209,3 +209,59 @@ BEGIN
     RETURN @role;
 END;
 GO
+
+
+
+------------------------------------------------------
+-- TRIGGER XÓA TÀI KHOẢN TỰ ĐỘNG (DROP USER & LOGIN)
+------------------------------------------------------
+CREATE OR ALTER TRIGGER [dbo].[trg_DeleteUserAccount]
+ON [dbo].[Accounts]
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Khai báo các biến cục bộ để chứa thông tin người dùng bị xóa
+    DECLARE @username NVARCHAR(50);
+    DECLARE @sqlString NVARCHAR(MAX);
+    
+    -- Duyệt qua tất cả các dòng bị xóa (sử dụng CURSOR an toàn hơn cho DDL)
+    DECLARE deleted_cursor CURSOR FOR
+    SELECT d.username
+    FROM deleted d;
+
+    OPEN deleted_cursor;
+    FETCH NEXT FROM deleted_cursor INTO @username;
+
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        BEGIN TRY
+            -- 1. Xóa Database User (Phải xóa User trước khi xóa Login)
+            IF EXISTS (SELECT 1 FROM sys.database_principals WHERE name = @username AND type = 'S')
+            BEGIN
+                SET @sqlString = N'DROP USER ' + QUOTENAME(@username);
+                EXEC sp_executesql @sqlString;
+            END
+
+            -- 2. Xóa SQL Login (Cổng đăng nhập Server)
+            IF EXISTS (SELECT 1 FROM sys.server_principals WHERE name = @username AND type = 'S')
+            BEGIN
+                SET @sqlString = N'DROP LOGIN ' + QUOTENAME(@username);
+                EXEC sp_executesql @sqlString;
+            END
+
+        END TRY
+        BEGIN CATCH
+            -- Nếu có lỗi xảy ra (ví dụ: Login đang được sử dụng), ta ghi nhận lỗi nhưng không hủy lệnh DELETE chung
+            DECLARE @errMsg NVARCHAR(4000) = ERROR_MESSAGE();
+            PRINT N'LỖI XÓA LOGIN/USER cho [' + @username + ']: ' + @errMsg;
+        END CATCH
+
+        FETCH NEXT FROM deleted_cursor INTO @username;
+    END
+
+    CLOSE deleted_cursor;
+    DEALLOCATE deleted_cursor;
+END
+GO

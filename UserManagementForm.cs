@@ -13,7 +13,7 @@ namespace CinameAsset
         {
             InitializeComponent();
             connectionString = SessionManager.GetConnectionString();
-            MessageBox.Show(connectionString,"thông báo", MessageBoxButtons.OK);
+            
             // Kiểm tra quyền Admin
             if (!SessionManager.IsAdmin)
             {
@@ -23,6 +23,8 @@ namespace CinameAsset
                 return;
             }
 
+            // THÊM SỰ KIỆN XỬ LÝ NHẤP VÀO CỘT NÚT
+            this.dgvUsers.CellContentClick += new DataGridViewCellEventHandler(this.dgvUsers_CellContentClick);
         }
 
         private void InitializeComponent()
@@ -213,6 +215,9 @@ namespace CinameAsset
             // Thiết lập giá trị mặc định
             cmbRole.SelectedIndex = 1; // NhanVien
             LoadUsers();
+            
+            // Ẩn nút Delete bên ngoài vì đã có cột nút Xóa trong grid
+            btnDelete.Visible = false;
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -256,9 +261,9 @@ namespace CinameAsset
                 string roleName = cmbRole.SelectedItem.ToString();
 
                 // Gọi stored procedure tạo tài khoản
+                // Sử dụng connection string có quyền cao (sa) để tạo SQL Login
                 using (SqlConnection conn = new SqlConnection("Data Source=(local);Initial Catalog=CinemaAssetDB;User ID=sa;Password=1234;"))
                 {
-                    MessageBox.Show(connectionString, "thông báo");
                     conn.Open();
                     using (SqlCommand cmd = new SqlCommand("sp_CreateUserAccount", conn))
                     {
@@ -331,26 +336,22 @@ namespace CinameAsset
 
                 if (result == DialogResult.Yes)
                 {
-                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    // Sử dụng connection string có quyền cao (sa) để xóa SQL Login
+                    using (SqlConnection conn = new SqlConnection("Data Source=(local);Initial Catalog=CinemaAssetDB;User ID=sa;Password=1234;"))
                     {
                         conn.Open();
-                        using (SqlCommand cmd = new SqlCommand(
-                            "DELETE FROM dbo.Accounts WHERE username = @username", conn))
+                        
+                        // Gọi stored procedure để xóa cả SQL Login và record trong Accounts
+                        using (SqlCommand cmd = new SqlCommand("sp_DeleteUserAccount_WithLogin", conn))
                         {
-                            cmd.Parameters.AddWithValue("@username", username);
-                            int rowsAffected = cmd.ExecuteNonQuery();
-
-                            if (rowsAffected > 0)
-                            {
-                                MessageBox.Show("Xóa tài khoản thành công!", "Thành công", 
-                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                LoadUsers();
-                            }
-                            else
-                            {
-                                MessageBox.Show("Không thể xóa tài khoản!", "Thất bại", 
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@Username", username);
+                            
+                            cmd.ExecuteNonQuery();
+                            
+                            MessageBox.Show("Xóa tài khoản thành công!", "Thành công", 
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            LoadUsers();
                         }
                     }
                 }
@@ -397,6 +398,18 @@ namespace CinameAsset
                         dgvUsers.Columns["is_active"].Visible = false;
                         dgvUsers.Columns["status_text"].HeaderText = "Trạng thái";
                         dgvUsers.Columns["status_text"].Width = 100;
+
+                        // THÊM CỘT NÚT XÓA MỚI
+                        if (dgvUsers.Columns["colActionDelete"] == null)
+                        {
+                            DataGridViewButtonColumn deleteBtn = new DataGridViewButtonColumn();
+                            deleteBtn.Name = "colActionDelete";
+                            deleteBtn.HeaderText = "Thao tác";
+                            deleteBtn.Text = "Xóa";
+                            deleteBtn.UseColumnTextForButtonValue = true;
+                            deleteBtn.Width = 80;
+                            dgvUsers.Columns.Add(deleteBtn);
+                        }
                     }
                 }
             }
@@ -414,6 +427,29 @@ namespace CinameAsset
             txtFullName.Clear();
             cmbRole.SelectedIndex = 1; // NhanVien
             txtUsername.Focus();
+        }
+
+        // Xử lý sự kiện nhấp vào cột nút trong DataGridView
+        private void dgvUsers_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Chỉ xử lý khi nhấp vào cột "Xóa" và không phải header
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0 && dgvUsers.Columns[e.ColumnIndex].Name == "colActionDelete")
+            {
+                try
+                {
+                    // 1. Đảm bảo dòng được chọn
+                    dgvUsers.ClearSelection();
+                    dgvUsers.Rows[e.RowIndex].Selected = true;
+                    
+                    // 2. Gọi logic xóa tài khoản (tái sử dụng hàm btnDelete_Click)
+                    btnDelete_Click(sender, e);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi xóa: {ex.Message}", "Lỗi", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }

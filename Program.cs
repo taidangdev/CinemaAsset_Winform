@@ -14,9 +14,9 @@ namespace CinameAsset
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             
-            // Chạy RegisterForm để tạo tài khoản Admin ban đầu
-            // Sau khi tạo xong, người dùng có thể chuyển sang LoginForm
-            Application.Run(new RegisterForm());
+            // Khởi chạy với LoginForm
+            // Người dùng có thể chuyển sang RegisterForm nếu cần đăng ký
+            Application.Run(new LoginForm());
         }
     }
 }
