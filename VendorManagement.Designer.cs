@@ -19,7 +19,6 @@ namespace CinameAsset
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblTitle = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.btnPurchase = new Guna.UI2.WinForms.Guna2Button();
             this.btnAddVendor = new Guna.UI2.WinForms.Guna2Button();
             this.dgvVendors = new Guna.UI2.WinForms.Guna2DataGridView();
@@ -32,6 +31,7 @@ namespace CinameAsset
             this.colStopCooperation = new System.Windows.Forms.DataGridViewButtonColumn();
             this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2Panel3 = new Guna.UI2.WinForms.Guna2Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVendors)).BeginInit();
             this.guna2Panel2.SuspendLayout();
@@ -41,25 +41,13 @@ namespace CinameAsset
             // guna2Panel1
             // 
             this.guna2Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
-            this.guna2Panel1.Controls.Add(this.lblTitle);
+            this.guna2Panel1.Controls.Add(this.label1);
             this.guna2Panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.guna2Panel1.Location = new System.Drawing.Point(0, 0);
             this.guna2Panel1.Margin = new System.Windows.Forms.Padding(5);
             this.guna2Panel1.Name = "guna2Panel1";
             this.guna2Panel1.Size = new System.Drawing.Size(951, 64);
             this.guna2Panel1.TabIndex = 0;
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(5, 14);
-            this.lblTitle.Margin = new System.Windows.Forms.Padding(5);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(158, 30);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "Quản Lý Đối Tác";
             // 
             // btnPurchase
             // 
@@ -236,6 +224,17 @@ namespace CinameAsset
             this.guna2Panel3.Size = new System.Drawing.Size(925, 381);
             this.guna2Panel3.TabIndex = 4;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(275, 41);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "QUẢN LÝ ĐỐI TÁC";
+            // 
             // VendorManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
@@ -262,7 +261,6 @@ namespace CinameAsset
 
 
         private Guna.UI2.WinForms.Guna2Panel guna2Panel1;
-        private Guna.UI2.WinForms.Guna2HtmlLabel lblTitle;
         private Guna.UI2.WinForms.Guna2Button btnAddVendor;
         private Guna.UI2.WinForms.Guna2Button btnPurchase;
         private Guna.UI2.WinForms.Guna2DataGridView dgvVendors;
@@ -275,5 +273,6 @@ namespace CinameAsset
         private System.Windows.Forms.DataGridViewButtonColumn colStopCooperation;
         private Guna.UI2.WinForms.Guna2Panel guna2Panel2;
         private Guna.UI2.WinForms.Guna2Panel guna2Panel3;
+        private System.Windows.Forms.Label label1;
     }
 }

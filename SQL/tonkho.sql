@@ -1,27 +1,9 @@
 ﻿use CinemaAssetDB
 go
 
---View hiển thị tồn kho (tô đỏ nếu dưới min)
-CREATE OR ALTER VIEW dbo.vw_WarehouseStatus AS
-SELECT
-  w.asset_type_id,
-  at.name                 AS asset_type_name,
-  w.stock_qty,
-  w.min_stock,
-  CASE WHEN w.stock_qty < w.min_stock THEN N'LOW' ELSE N'OK' END AS stock_state,
-  -- thiếu bao nhiêu để đạt min
-  CASE WHEN w.stock_qty < w.min_stock THEN (w.min_stock - w.stock_qty) ELSE 0 END AS shortage,
-  -- % đạt so với min (nếu min=0 coi như 100%)
-  CAST(CASE 
-        WHEN w.min_stock = 0 THEN 100.0
-        ELSE 100.0 * w.stock_qty / NULLIF(w.min_stock,0)
-      END AS DECIMAL(20,2)) AS pct_of_min
-FROM Warehouse w
-JOIN AssetType at ON at.asset_type_id = w.asset_type_id;
-GO
 
---TVF lọc linh hoạt (tham số hóa cho UI)
-CREATE OR ALTER FUNCTION dbo.fn_WarehouseFilter
+-- Function duy nhất thay thế cho vw_WarehouseStatus và fn_WarehouseFilter
+CREATE OR ALTER FUNCTION dbo.fn_WarehouseReport
 (
   @only_low BIT        = NULL,          -- 1: chỉ LOW, 0: tất cả
   @asset_type_id INT   = NULL,          -- lọc theo loại
@@ -31,22 +13,43 @@ RETURNS TABLE
 AS
 RETURN
 (
-  SELECT *
-  FROM dbo.vw_WarehouseStatus v
-  WHERE (@only_low IS NULL OR (@only_low=1 AND v.stock_state='LOW') OR (@only_low=0))
-    AND (@asset_type_id IS NULL OR v.asset_type_id = @asset_type_id)
-    AND (@name_like IS NULL OR v.asset_type_name LIKE N'%' + @name_like + N'%')
+  SELECT
+    w.asset_type_id,
+    at.name AS asset_type_name,
+    w.stock_qty,
+    w.min_stock,
+    
+    -- Tính toán stock_state (sử dụng fn_IsLowStock như cũ)
+    CASE 
+      WHEN dbo.fn_IsLowStock(w.asset_type_id) = 1 THEN N'LOW' 
+      ELSE N'OK' 
+    END AS stock_state,
+    
+    -- Tính thiếu
+    CASE 
+      WHEN w.stock_qty < w.min_stock THEN (w.min_stock - w.stock_qty) 
+      ELSE 0 
+    END AS shortage,
+    
+    -- Tính % đạt so với min
+    CAST(CASE 
+          WHEN w.min_stock = 0 THEN 100.0
+          ELSE 100.0 * w.stock_qty / NULLIF(w.min_stock,0)
+        END AS DECIMAL(20,2)) AS pct_of_min
+  FROM dbo.Warehouse w
+  JOIN dbo.AssetType at ON at.asset_type_id = w.asset_type_id
+  
+  -- ÁP DỤNG LỌC (Logic từ fn_WarehouseFilter)
+  WHERE (@only_low IS NULL OR 
+         (@only_low = 1 AND (CASE WHEN dbo.fn_IsLowStock(w.asset_type_id) = 1 THEN N'LOW' ELSE N'OK' END) = N'LOW') OR 
+         (@only_low = 0))
+    AND (@asset_type_id IS NULL OR w.asset_type_id = @asset_type_id)
+    AND (@name_like IS NULL OR at.name LIKE N'%' + @name_like + N'%')
 );
 GO
 
--- Tất cả
-SELECT * FROM dbo.fn_WarehouseFilter(DEFAULT, DEFAULT, DEFAULT);
 
--- Chỉ mặt hàng LOW
-SELECT * FROM dbo.fn_WarehouseFilter(1, DEFAULT, DEFAULT);
 
--- Tìm “SPEAKER” và chỉ LOW
-SELECT * FROM dbo.fn_WarehouseFilter(1, DEFAULT, N'SPEAKER');
 
 --Procedure: Đề xuất nhập kho
 CREATE OR ALTER PROCEDURE dbo.sp_Warehouse_ReorderSuggestion

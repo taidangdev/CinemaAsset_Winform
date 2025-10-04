@@ -46,9 +46,9 @@ SELECT
     s.seat_id                                   AS asset_id,
     s.asset_type_id,
     ui.display                                  AS asset_type_display,
-    CONCAT(s.seat_row, s.seat_pos)              AS unit_no,
+    s.seat_code              AS unit_no,
     s.status,
-    CAST(NULL AS DATETIME2)                     AS installed_at,
+    s.installed_at                              AS installed_at, 
     CAST('SEAT' AS VARCHAR(5))                  AS kind
 FROM dbo.Seat s
 CROSS JOIN SeatType st
@@ -73,6 +73,8 @@ JOIN dbo.vw_AssetTypes_UI ui ON ui.[key] = a.asset_type_id
 WHERE a.auditorium_id = @auditorium_id
   AND a.asset_type_id = @asset_type_id
   AND @asset_type_id <> st.seat_type_id;
+
+
 
 --PROCEDURE HIỂN THỊ DANH SÁCH TÀI SẢN THEO LOẠI THEO PHÒNG
 CREATE OR ALTER PROCEDURE dbo.sp_RoomAssets
@@ -145,7 +147,7 @@ BEGIN
       UPDATE Warehouse SET stock_qty = stock_qty - 1 WHERE asset_type_id=@atype;
 
       UPDATE Asset
-      SET status='OK', installed_at=SYSUTCDATETIME()
+      SET status='OK'
       WHERE asset_id=@asset_id;
 
     COMMIT;
@@ -589,13 +591,14 @@ BEGIN
                 pos     = ((@startNo + (rn - 1) - 1) % @PerRow) + 1
             FROM tally
         )
-        INSERT INTO dbo.Seat (auditorium_id, asset_type_id, seat_row, seat_pos, status)
+        INSERT INTO dbo.Seat (auditorium_id, asset_type_id, seat_row, seat_pos, status, installed_at)
         SELECT
             @auditorium_id,
             @seat_type_id,
             CHAR(ASCII('A') + row_idx),  -- A..J
             pos,
-            'OK'
+            'OK',
+			SYSUTCDATETIME()
         FROM to_insert;
 
         COMMIT;
@@ -608,8 +611,9 @@ BEGIN
             ui.display                  AS asset_type_display,
             s.seat_row,
             s.seat_pos,
-            CONCAT(s.seat_row, s.seat_pos) AS unit_no,
-            s.status
+            s.seat_code AS unit_no,
+            s.status,
+			 s.installed_at 
         FROM dbo.Seat s
         JOIN dbo.vw_AssetTypes_UI ui ON ui.[key] = s.asset_type_id
         WHERE s.auditorium_id = @auditorium_id

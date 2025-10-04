@@ -15,21 +15,17 @@ namespace CinameAsset
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.lblTitle = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.cmbVendor = new Guna.UI2.WinForms.Guna2ComboBox();
-            this.lblVendor = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.btnRemoveItem = new Guna.UI2.WinForms.Guna2Button();
             this.btnAddItem = new Guna.UI2.WinForms.Guna2Button();
             this.numUnitCost = new Guna.UI2.WinForms.Guna2NumericUpDown();
-            this.lblUnitCost = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.numQuantity = new Guna.UI2.WinForms.Guna2NumericUpDown();
-            this.lblQuantity = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.cmbAssetType = new Guna.UI2.WinForms.Guna2ComboBox();
-            this.lblAssetType = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2Panel4 = new Guna.UI2.WinForms.Guna2Panel();
             this.dgvItems = new Guna.UI2.WinForms.Guna2DataGridView();
             this.colAssetType = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -41,6 +37,10 @@ namespace CinameAsset
             this.lblTotal = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.btnCancel = new Guna.UI2.WinForms.Guna2Button();
             this.btnSave = new Guna.UI2.WinForms.Guna2Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUnitCost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numQuantity)).BeginInit();
@@ -89,17 +89,6 @@ namespace CinameAsset
             this.cmbVendor.TabIndex = 1;
             this.cmbVendor.SelectedIndexChanged += new System.EventHandler(this.cmbVendor_SelectedIndexChanged);
             // 
-            // lblVendor
-            // 
-            this.lblVendor.BackColor = System.Drawing.Color.Transparent;
-            this.lblVendor.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVendor.Location = new System.Drawing.Point(27, 58);
-            this.lblVendor.Margin = new System.Windows.Forms.Padding(4);
-            this.lblVendor.Name = "lblVendor";
-            this.lblVendor.Size = new System.Drawing.Size(105, 25);
-            this.lblVendor.TabIndex = 0;
-            this.lblVendor.Text = "Chọn đối tác:";
-            // 
             // btnRemoveItem
             // 
             this.btnRemoveItem.BorderRadius = 8;
@@ -142,20 +131,9 @@ namespace CinameAsset
             0,
             0});
             this.numUnitCost.Name = "numUnitCost";
-            this.numUnitCost.Size = new System.Drawing.Size(89, 45);
+            this.numUnitCost.Size = new System.Drawing.Size(177, 45);
             this.numUnitCost.TabIndex = 5;
             this.numUnitCost.ThousandsSeparator = true;
-            // 
-            // lblUnitCost
-            // 
-            this.lblUnitCost.BackColor = System.Drawing.Color.Transparent;
-            this.lblUnitCost.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblUnitCost.Location = new System.Drawing.Point(537, 60);
-            this.lblUnitCost.Margin = new System.Windows.Forms.Padding(4);
-            this.lblUnitCost.Name = "lblUnitCost";
-            this.lblUnitCost.Size = new System.Drawing.Size(72, 25);
-            this.lblUnitCost.TabIndex = 4;
-            this.lblUnitCost.Text = "Đơn giá:";
             // 
             // numQuantity
             // 
@@ -163,7 +141,7 @@ namespace CinameAsset
             this.numQuantity.BorderRadius = 8;
             this.numQuantity.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.numQuantity.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.numQuantity.Location = new System.Drawing.Point(660, 82);
+            this.numQuantity.Location = new System.Drawing.Point(722, 82);
             this.numQuantity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.numQuantity.Maximum = new decimal(new int[] {
             10000,
@@ -176,24 +154,13 @@ namespace CinameAsset
             0,
             0});
             this.numQuantity.Name = "numQuantity";
-            this.numQuantity.Size = new System.Drawing.Size(128, 45);
+            this.numQuantity.Size = new System.Drawing.Size(81, 45);
             this.numQuantity.TabIndex = 3;
             this.numQuantity.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            // 
-            // lblQuantity
-            // 
-            this.lblQuantity.BackColor = System.Drawing.Color.Transparent;
-            this.lblQuantity.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblQuantity.Location = new System.Drawing.Point(660, 58);
-            this.lblQuantity.Margin = new System.Windows.Forms.Padding(4);
-            this.lblQuantity.Name = "lblQuantity";
-            this.lblQuantity.Size = new System.Drawing.Size(81, 25);
-            this.lblQuantity.TabIndex = 2;
-            this.lblQuantity.Text = "Số lượng:";
             // 
             // cmbAssetType
             // 
@@ -211,17 +178,6 @@ namespace CinameAsset
             this.cmbAssetType.Size = new System.Drawing.Size(234, 36);
             this.cmbAssetType.TabIndex = 1;
             // 
-            // lblAssetType
-            // 
-            this.lblAssetType.BackColor = System.Drawing.Color.Transparent;
-            this.lblAssetType.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblAssetType.Location = new System.Drawing.Point(282, 58);
-            this.lblAssetType.Margin = new System.Windows.Forms.Padding(4);
-            this.lblAssetType.Name = "lblAssetType";
-            this.lblAssetType.Size = new System.Drawing.Size(105, 25);
-            this.lblAssetType.TabIndex = 0;
-            this.lblAssetType.Text = "Loại thiết bị:";
-            // 
             // guna2Panel4
             // 
             this.guna2Panel4.BackColor = System.Drawing.Color.White;
@@ -237,28 +193,28 @@ namespace CinameAsset
             // 
             this.dgvItems.AllowUserToAddRows = false;
             this.dgvItems.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            this.dgvItems.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(152)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.White;
+            this.dgvItems.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(152)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             this.dgvItems.ColumnHeadersHeight = 40;
             this.dgvItems.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colAssetType,
             this.colQuantity,
             this.colUnitCost,
             this.colLineTotal});
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvItems.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvItems.DefaultCellStyle = dataGridViewCellStyle9;
             this.dgvItems.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
             this.dgvItems.Location = new System.Drawing.Point(16, 15);
             this.dgvItems.Margin = new System.Windows.Forms.Padding(4);
@@ -384,24 +340,64 @@ namespace CinameAsset
             this.btnSave.Text = "Lưu";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(543, 58);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(133, 23);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Đơn giá (VNĐ):";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(718, 58);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(88, 23);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "Số lượng:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(277, 64);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(112, 23);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Loại thiết bị:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(25, 58);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(116, 23);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "Chọn đối tác:";
+            // 
             // PurchaseForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(927, 565);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnRemoveItem);
-            this.Controls.Add(this.lblVendor);
             this.Controls.Add(this.btnAddItem);
             this.Controls.Add(this.cmbVendor);
             this.Controls.Add(this.numUnitCost);
-            this.Controls.Add(this.lblUnitCost);
             this.Controls.Add(this.guna2Panel5);
             this.Controls.Add(this.guna2Panel4);
-            this.Controls.Add(this.lblQuantity);
             this.Controls.Add(this.numQuantity);
             this.Controls.Add(this.guna2Panel1);
             this.Controls.Add(this.cmbAssetType);
-            this.Controls.Add(this.lblAssetType);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
@@ -426,15 +422,11 @@ namespace CinameAsset
         private Guna.UI2.WinForms.Guna2Panel guna2Panel1;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblTitle;
         private Guna.UI2.WinForms.Guna2ComboBox cmbVendor;
-        private Guna.UI2.WinForms.Guna2HtmlLabel lblVendor;
         private Guna.UI2.WinForms.Guna2Button btnRemoveItem;
         private Guna.UI2.WinForms.Guna2Button btnAddItem;
         private Guna.UI2.WinForms.Guna2NumericUpDown numUnitCost;
-        private Guna.UI2.WinForms.Guna2HtmlLabel lblUnitCost;
         private Guna.UI2.WinForms.Guna2NumericUpDown numQuantity;
-        private Guna.UI2.WinForms.Guna2HtmlLabel lblQuantity;
         private Guna.UI2.WinForms.Guna2ComboBox cmbAssetType;
-        private Guna.UI2.WinForms.Guna2HtmlLabel lblAssetType;
         private Guna.UI2.WinForms.Guna2Panel guna2Panel4;
         private Guna.UI2.WinForms.Guna2DataGridView dgvItems;
         private System.Windows.Forms.DataGridViewTextBoxColumn colAssetType;
@@ -446,5 +438,9 @@ namespace CinameAsset
         private Guna.UI2.WinForms.Guna2HtmlLabel lblTotal;
         private Guna.UI2.WinForms.Guna2Button btnCancel;
         private Guna.UI2.WinForms.Guna2Button btnSave;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
     }
 }

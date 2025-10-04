@@ -114,7 +114,45 @@ BEGIN
 END
 GO
 
+-- tính tổng hóa đơn theo lọc
+CREATE OR ALTER FUNCTION dbo.fn_GetTotalBillCount
+(
+  @date_from DATE = NULL,
+  @date_to   DATE = NULL,
+  @vendor_id INT  = NULL
+)
+RETURNS INT
+AS
+BEGIN
+    DECLARE @Count INT;
+    
+    SELECT @Count = COUNT(b.bill_id)
+    FROM dbo.Bill b
+    WHERE (@date_from IS NULL OR b.bill_date >= @date_from)
+      AND (@date_to   IS NULL OR b.bill_date <= @date_to)
+      AND (@vendor_id IS NULL OR b.vendor_id = @vendor_id);
+
+    RETURN ISNULL(@Count, 0);
+END
+GO
 
 
+--Kiểm tra trạng thái tồn kho thấp (LOW) cho một loại hàng.
+CREATE OR ALTER FUNCTION dbo.fn_IsLowStock(@asset_type_id INT)
+RETURNS BIT
+AS
+BEGIN
+    DECLARE @IsLow BIT;
+
+    SELECT @IsLow = CASE 
+                        WHEN w.stock_qty < w.min_stock THEN 1 
+                        ELSE 0 
+                    END
+    FROM dbo.Warehouse w
+    WHERE w.asset_type_id = @asset_type_id;
+
+    RETURN ISNULL(@IsLow, 0);
+END
+GO
 
 

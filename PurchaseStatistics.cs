@@ -131,10 +131,6 @@ namespace CinameAsset
             }
         }
 
-        private void btnRefresh_Click(object sender, EventArgs e)
-        {
-            LoadBillStatistics();
-        }
 
         private void dgvBills_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -161,6 +157,11 @@ namespace CinameAsset
         private void guna2Panel3_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void btnRefresh_Click_1(object sender, EventArgs e)
+        {
+            LoadBillStatistics();
         }
     }
 }

@@ -38,8 +38,7 @@ JOIN dbo.vw_AssetTypes_UI ui
 WHERE v.is_active = 1;
 GO
 
-select * from dbo.vw_VendorActiveWithCatalog
-select * from dbo.vw_VendorCatalogActive
+
 
 
 --TVF: lấy danh sách loại hàng 1 vendor (dễ dùng trong SELECT có tham số)
@@ -226,15 +225,6 @@ BEGIN
       INSERT INTO BillItem(bill_id, asset_type_id, qty, unit_cost)
       SELECT @BillId, asset_type_id, qty, unit_cost
       FROM @Items;
-
-      -- 6. Cập nhật Warehouse bằng MERGE
-      MERGE Warehouse AS w
-      USING @Items i ON w.asset_type_id=i.asset_type_id
-      WHEN MATCHED THEN
-        UPDATE SET w.stock_qty = w.stock_qty + i.qty
-      WHEN NOT MATCHED THEN
-        INSERT(asset_type_id, stock_qty, min_stock)
-        VALUES(i.asset_type_id, i.qty, 0);
 
       -- 7. Cập nhật tổng tiền (trigger trg_BillItem_RecalcTotal cũng đã cover)
       UPDATE b

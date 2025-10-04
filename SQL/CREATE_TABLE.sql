@@ -17,11 +17,26 @@ CREATE TABLE Seat (
   seat_pos      INT NOT NULL CHECK (seat_pos >= 1), 
   status        VARCHAR(15) NOT NULL DEFAULT 'OK'
                  CHECK (status IN ('OK','BROKEN')),
+  
+  -- Cột mới được thêm: Ngày lắp đặt
+  installed_at  DATETIME2 NULL, 
+
+  -- Cột tính toán tự động gộp seat_row và seat_pos (ví dụ: 'A1', 'B5')
+  seat_code     AS (CONCAT(seat_row, CAST(seat_pos AS NVARCHAR(10)))),
 
   -- Không trùng vị trí ghế trong cùng phòng
   CONSTRAINT UQ_Seat_RowPos_InRoom UNIQUE (auditorium_id, seat_row, seat_pos)
 );
+GO
+
+-- 3. Thêm chỉ mục để tăng tốc truy vấn
 CREATE INDEX IX_Seat_Auditorium ON Seat(auditorium_id, seat_row, seat_pos);
+GO
+
+-- Thêm chỉ mục để tăng tốc truy vấn theo phòng và vị trí
+CREATE INDEX IX_Seat_Auditorium ON Seat(auditorium_id, seat_row, seat_pos);
+GO
+-- Thêm cột installed_at vào bảng Seat
 
 
 -- Vendor : lưu thông tin đối tác
@@ -134,7 +149,7 @@ END
 GO
 
 
--- tự động tính tổng tiền trong BillItem và đồng bộ lên Bill
+-- 2 tự động tính tổng tiền trong BillItem và đồng bộ lên Bill
 
 
 CREATE OR ALTER TRIGGER trg_BillItem_RecalcTotal
@@ -161,45 +176,137 @@ BEGIN
 END
 GO
 
-
--- INSERT: normalize seat_row
-CREATE OR ALTER TRIGGER trg_Seat_Normalize_Insert
+-- 3 trigger chuẩn hóa dữ liệu (ĐÃ THÊM installed_at)
+CREATE OR ALTER TRIGGER trg_Seat_Normalize_InsertUpdate
 ON Seat
-INSTEAD OF INSERT
+INSTEAD OF INSERT, UPDATE
 AS
 BEGIN
-  SET NOCOUNT ON;
+    SET NOCOUNT ON;
 
-  INSERT INTO Seat(auditorium_id, asset_type_id, seat_row, seat_pos, status)
-  SELECT  i.auditorium_id,
-          i.asset_type_id,
-          UPPER(LTRIM(RTRIM(i.seat_row))) AS seat_row,
-          i.seat_pos,
-          i.status
-  FROM inserted i;
+    -- Kiểm tra nếu là INSERT (dữ liệu chỉ có trong inserted, không có trong deleted)
+    IF NOT EXISTS (SELECT 1 FROM deleted)
+    BEGIN
+        -- Xử lý INSERT
+        INSERT INTO Seat(auditorium_id, asset_type_id, seat_row, seat_pos, status, installed_at) -- ĐÃ THÊM installed_at
+        SELECT 
+            i.auditorium_id,
+            i.asset_type_id,
+            UPPER(LTRIM(RTRIM(i.seat_row))) AS seat_row, -- Chuẩn hóa
+            i.seat_pos,
+            i.status,
+            i.installed_at -- Lấy giá trị installed_at từ inserted
+        FROM inserted i;
+    END
+    ELSE
+    BEGIN
+        -- Xử lý UPDATE
+        UPDATE s
+        SET s.auditorium_id = i.auditorium_id,
+            s.asset_type_id = i.asset_type_id,
+            s.seat_row      = UPPER(LTRIM(RTRIM(i.seat_row))), -- Chuẩn hóa
+            s.seat_pos      = i.seat_pos,
+            s.status        = i.status,
+            s.installed_at  = i.installed_at -- Cập nhật installed_at
+        FROM Seat s
+        JOIN inserted i ON i.seat_id = s.seat_id;
+    END
 END
 GO
 
--- UPDATE: normalize seat_row nếu có cập nhật
-CREATE OR ALTER TRIGGER trg_Seat_Normalize_Update
-ON Seat
-INSTEAD OF UPDATE
+
+
+-- 4. Trigger AFTER INSERT, UPDATE, DELETE trên BillItem để cập nhật tồn kho (Warehouse)
+CREATE OR ALTER TRIGGER dbo.trg_BillItem_UpdateWarehouse
+ON dbo.BillItem
+AFTER INSERT, UPDATE
 AS
 BEGIN
-  SET NOCOUNT ON;
+    SET NOCOUNT ON;
 
-  -- Cập nhật theo dữ liệu đưa vào; luôn chuẩn hóa seat_row
-  UPDATE s
-  SET s.auditorium_id = ISNULL(i.auditorium_id, s.auditorium_id),
-      s.asset_type_id = ISNULL(i.asset_type_id, s.asset_type_id),
-      s.seat_row      = UPPER(LTRIM(RTRIM(ISNULL(i.seat_row, s.seat_row)))),
-      s.seat_pos      = ISNULL(i.seat_pos, s.seat_pos),
-      s.status        = ISNULL(i.status, s.status)
-  FROM Seat s
-  JOIN inserted i ON i.seat_id = s.seat_id;
+    -- 1. Xử lý Tự động Thêm Dòng Tồn kho mới
+    -- Đảm bảo mỗi loại hàng trong inserted đều có một dòng trong Warehouse (min_stock = 0).
+    INSERT INTO dbo.Warehouse (asset_type_id, stock_qty, min_stock)
+    SELECT DISTINCT i.asset_type_id, 0, 0
+    FROM inserted i
+    LEFT JOIN dbo.Warehouse w ON w.asset_type_id = i.asset_type_id
+    WHERE w.asset_type_id IS NULL;
+
+
+    -- 2. Tính Tăng Tồn Kho Ròng (Net Increase)
+    ;WITH NetIncrease AS (
+        -- Lấy số lượng từ dòng được chèn mới (trường hợp INSERT) hoặc
+        -- tính hiệu số tăng giữa qty mới và qty cũ (trường hợp UPDATE)
+        SELECT 
+            i.asset_type_id,
+            SUM(i.qty - ISNULL(d.qty, 0)) AS IncreaseQty
+        FROM inserted i
+        LEFT JOIN deleted d ON d.bill_item_id = i.bill_item_id
+        GROUP BY i.asset_type_id
+        HAVING SUM(i.qty - ISNULL(d.qty, 0)) > 0 -- Chỉ lấy những loại hàng có số lượng tăng ròng
+    )
+    -- 3. Cập nhật Tăng tồn kho (stock_qty)
+    UPDATE w
+    SET w.stock_qty = ISNULL(w.stock_qty, 0) + ni.IncreaseQty
+    FROM dbo.Warehouse w
+    JOIN NetIncrease ni ON ni.asset_type_id = w.asset_type_id;
+    
 END
 GO
 
+USE CinemaAssetDB
+GO
+
+-- 5. Trigger AFTER UPDATE trên Asset để cập nhật installed_at
+CREATE OR ALTER TRIGGER dbo.trg_Asset_UpdateInstalledAt
+ON dbo.Asset
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Chỉ cập nhật installed_at khi:
+    -- 1. Trạng thái cũ là BROKEN
+    -- 2. Trạng thái mới là OK
+    -- 3. Cột installed_at HOẶC status đã bị thay đổi
+    UPDATE a
+    SET a.installed_at = SYSUTCDATETIME()
+    FROM dbo.Asset a
+    JOIN inserted i ON i.asset_id = a.asset_id
+    JOIN deleted d ON d.asset_id = a.asset_id
+    WHERE d.status = 'BROKEN'
+      AND i.status = 'OK'
+      -- Chỉ chạy khi status thực sự thay đổi từ BROKEN sang OK
+      AND (d.status <> i.status);
+
+END
+GO
+
+USE CinemaAssetDB
+GO
+
+-- 6. Trigger AFTER UPDATE trên Seat để cập nhật installed_at
+-- CHỈ ĐỊNH RÕ RÀNG TRÊN BẢNG Seat
+CREATE OR ALTER TRIGGER dbo.trg_Seat_UpdateInstalledAt
+ON dbo.Seat
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    -- Cập nhật installed_at cho Seat (sử dụng seat_id)
+    UPDATE s
+    SET s.installed_at = SYSUTCDATETIME()
+    FROM dbo.Seat s
+    JOIN inserted i ON i.seat_id = s.seat_id
+    JOIN deleted d ON d.seat_id = s.seat_id
+    WHERE d.status = 'BROKEN'
+      AND i.status = 'OK'
+      -- Chỉ chạy khi status thực sự thay đổi từ BROKEN sang OK
+      AND (d.status <> i.status);
+
+END
+GO
 
 
 
@@ -289,15 +396,14 @@ SELECT * FROM Warehouse ORDER BY asset_type_id;
 DECLARE @SEAT INT = (SELECT asset_type_id FROM AssetType WHERE name = N'SEAT');
 DECLARE @Alpha INT = (SELECT auditorium_id FROM Auditorium WHERE name = N'Room Alpha');
 
+
 -- Test seat_row: trigger sẽ chuẩn hóa thành "A", "B"
-INSERT INTO Seat(auditorium_id, asset_type_id, seat_row, seat_pos, status) VALUES
-(@Alpha, @SEAT, N'a ', 1, 'OK'),
-(@Alpha, @SEAT, N'A',  2, 'OK'),
-(@Alpha, @SEAT, N' b', 1, 'OK'),
-(@Alpha, @SEAT, N'B',  2, 'OK');
-
-SELECT * FROM Seat WHERE auditorium_id =(SELECT auditorium_id FROM Auditorium WHERE name = N'Room Alpha') ORDER BY seat_row, seat_pos;
-
+INSERT INTO Seat(auditorium_id, asset_type_id, seat_row, seat_pos, status, installed_at) 
+VALUES
+(@Alpha, @SEAT, N'a ', 1, 'OK', SYSUTCDATETIME()),  -- Ghế A1
+(@Alpha, @SEAT, N'A',  2, 'OK', SYSUTCDATETIME()),  -- Ghế A2
+(@Alpha, @SEAT, N' b', 1, 'OK', SYSUTCDATETIME()),  -- Ghế B1
+(@Alpha, @SEAT, N'B',  2, 'OK', SYSUTCDATETIME());  -- Ghế B2
 
 
 

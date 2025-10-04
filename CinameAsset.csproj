@@ -173,7 +173,6 @@
     <None Include="packages.config" />
     <None Include="App.config" />
     <None Include="README.md" />
-    <Content Include="thongke.sql" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />

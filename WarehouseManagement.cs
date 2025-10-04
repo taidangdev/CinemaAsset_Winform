@@ -20,6 +20,11 @@ namespace CinameAsset
         {
             LoadAssetTypes();
             LoadWarehouseData();
+            this.cmbAssetType.SelectionChangeCommitted += cmbAssetType_SelectionChangeCommitted;
+        }
+        private void cmbAssetType_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            LoadWarehouseData();
         }
 
         private void LoadAssetTypes()
@@ -89,7 +94,7 @@ namespace CinameAsset
                 {
                     conn.Open();
                     
-                    using (SqlCommand cmd = new SqlCommand("SELECT * FROM dbo.fn_WarehouseFilter(@only_low, @asset_type_id, @name_like)", conn))
+                    using (SqlCommand cmd = new SqlCommand("SELECT * FROM dbo.fn_WarehouseReport(@only_low, @asset_type_id, @name_like)", conn))
                     {
                         cmd.Parameters.AddWithValue("@only_low", onlyLowStock ? (object)1 : DBNull.Value);
                         cmd.Parameters.AddWithValue("@asset_type_id", assetTypeId.HasValue ? (object)assetTypeId.Value : DBNull.Value);

@@ -19,7 +19,6 @@ namespace CinameAsset
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblTitle = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
             this.btnReorderSuggestion = new Guna.UI2.WinForms.Guna2Button();
             this.btnRefresh = new Guna.UI2.WinForms.Guna2Button();
@@ -34,6 +33,7 @@ namespace CinameAsset
             this.colStockState = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colShortage = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPctOfMin = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label1 = new System.Windows.Forms.Label();
             this.guna2Panel1.SuspendLayout();
             this.guna2Panel2.SuspendLayout();
             this.guna2Panel3.SuspendLayout();
@@ -43,25 +43,13 @@ namespace CinameAsset
             // guna2Panel1
             // 
             this.guna2Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(175)))), ((int)(((byte)(80)))));
-            this.guna2Panel1.Controls.Add(this.lblTitle);
+            this.guna2Panel1.Controls.Add(this.label1);
             this.guna2Panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.guna2Panel1.Location = new System.Drawing.Point(0, 0);
-            this.guna2Panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.guna2Panel1.Margin = new System.Windows.Forms.Padding(4);
             this.guna2Panel1.Name = "guna2Panel1";
-            this.guna2Panel1.Size = new System.Drawing.Size(951, 74);
+            this.guna2Panel1.Size = new System.Drawing.Size(951, 61);
             this.guna2Panel1.TabIndex = 0;
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(16, 4);
-            this.lblTitle.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(242, 43);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "Quản Lý Tồn Kho";
             // 
             // guna2Panel2
             // 
@@ -72,8 +60,8 @@ namespace CinameAsset
             this.guna2Panel2.Controls.Add(this.chkLowStockOnly);
             this.guna2Panel2.Controls.Add(this.cmbAssetType);
             this.guna2Panel2.Controls.Add(this.lblAssetType);
-            this.guna2Panel2.Location = new System.Drawing.Point(16, 96);
-            this.guna2Panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.guna2Panel2.Location = new System.Drawing.Point(13, 69);
+            this.guna2Panel2.Margin = new System.Windows.Forms.Padding(4);
             this.guna2Panel2.Name = "guna2Panel2";
             this.guna2Panel2.Size = new System.Drawing.Size(922, 105);
             this.guna2Panel2.TabIndex = 1;
@@ -85,7 +73,7 @@ namespace CinameAsset
             this.btnReorderSuggestion.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnReorderSuggestion.ForeColor = System.Drawing.Color.White;
             this.btnReorderSuggestion.Location = new System.Drawing.Point(441, 18);
-            this.btnReorderSuggestion.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnReorderSuggestion.Margin = new System.Windows.Forms.Padding(4);
             this.btnReorderSuggestion.Name = "btnReorderSuggestion";
             this.btnReorderSuggestion.Size = new System.Drawing.Size(179, 48);
             this.btnReorderSuggestion.TabIndex = 4;
@@ -99,7 +87,7 @@ namespace CinameAsset
             this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRefresh.ForeColor = System.Drawing.Color.White;
             this.btnRefresh.Location = new System.Drawing.Point(677, 17);
-            this.btnRefresh.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnRefresh.Margin = new System.Windows.Forms.Padding(4);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(160, 49);
             this.btnRefresh.TabIndex = 3;
@@ -115,7 +103,7 @@ namespace CinameAsset
             this.chkLowStockOnly.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(175)))), ((int)(((byte)(80)))));
             this.chkLowStockOnly.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkLowStockOnly.Location = new System.Drawing.Point(489, 74);
-            this.chkLowStockOnly.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkLowStockOnly.Margin = new System.Windows.Forms.Padding(4);
             this.chkLowStockOnly.Name = "chkLowStockOnly";
             this.chkLowStockOnly.Size = new System.Drawing.Size(323, 27);
             this.chkLowStockOnly.TabIndex = 2;
@@ -136,8 +124,8 @@ namespace CinameAsset
             this.cmbAssetType.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cmbAssetType.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
             this.cmbAssetType.ItemHeight = 30;
-            this.cmbAssetType.Location = new System.Drawing.Point(48, 57);
-            this.cmbAssetType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmbAssetType.Location = new System.Drawing.Point(13, 51);
+            this.cmbAssetType.Margin = new System.Windows.Forms.Padding(4);
             this.cmbAssetType.Name = "cmbAssetType";
             this.cmbAssetType.Size = new System.Drawing.Size(345, 36);
             this.cmbAssetType.TabIndex = 1;
@@ -147,7 +135,7 @@ namespace CinameAsset
             this.lblAssetType.BackColor = System.Drawing.Color.Transparent;
             this.lblAssetType.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAssetType.Location = new System.Drawing.Point(48, 16);
-            this.lblAssetType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblAssetType.Margin = new System.Windows.Forms.Padding(4);
             this.lblAssetType.Name = "lblAssetType";
             this.lblAssetType.Size = new System.Drawing.Size(109, 27);
             this.lblAssetType.TabIndex = 0;
@@ -158,10 +146,10 @@ namespace CinameAsset
             this.guna2Panel3.BackColor = System.Drawing.Color.White;
             this.guna2Panel3.BorderRadius = 10;
             this.guna2Panel3.Controls.Add(this.dgvWarehouse);
-            this.guna2Panel3.Location = new System.Drawing.Point(13, 222);
-            this.guna2Panel3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.guna2Panel3.Location = new System.Drawing.Point(13, 182);
+            this.guna2Panel3.Margin = new System.Windows.Forms.Padding(4);
             this.guna2Panel3.Name = "guna2Panel3";
-            this.guna2Panel3.Size = new System.Drawing.Size(925, 359);
+            this.guna2Panel3.Size = new System.Drawing.Size(925, 399);
             this.guna2Panel3.TabIndex = 2;
             // 
             // dgvWarehouse
@@ -193,14 +181,14 @@ namespace CinameAsset
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvWarehouse.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvWarehouse.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dgvWarehouse.Location = new System.Drawing.Point(16, 21);
-            this.dgvWarehouse.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dgvWarehouse.Location = new System.Drawing.Point(4, 21);
+            this.dgvWarehouse.Margin = new System.Windows.Forms.Padding(4);
             this.dgvWarehouse.Name = "dgvWarehouse";
             this.dgvWarehouse.ReadOnly = true;
             this.dgvWarehouse.RowHeadersVisible = false;
             this.dgvWarehouse.RowHeadersWidth = 51;
             this.dgvWarehouse.RowTemplate.Height = 40;
-            this.dgvWarehouse.Size = new System.Drawing.Size(918, 334);
+            this.dgvWarehouse.Size = new System.Drawing.Size(917, 374);
             this.dgvWarehouse.TabIndex = 0;
             this.dgvWarehouse.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
             this.dgvWarehouse.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -266,6 +254,17 @@ namespace CinameAsset
             this.colPctOfMin.Name = "colPctOfMin";
             this.colPctOfMin.ReadOnly = true;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(256, 41);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Quản Lý Tồn Kho";
+            // 
             // WarehouseManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -276,7 +275,7 @@ namespace CinameAsset
             this.Controls.Add(this.guna2Panel2);
             this.Controls.Add(this.guna2Panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "WarehouseManagement";
             this.Text = "Quản Lý Kho Hàng";
             this.Load += new System.EventHandler(this.WarehouseManagement_Load);
@@ -291,7 +290,6 @@ namespace CinameAsset
         }
 
         private Guna.UI2.WinForms.Guna2Panel guna2Panel1;
-        private Guna.UI2.WinForms.Guna2HtmlLabel lblTitle;
         private Guna.UI2.WinForms.Guna2Panel guna2Panel2;
         private Guna.UI2.WinForms.Guna2Button btnReorderSuggestion;
         private Guna.UI2.WinForms.Guna2Button btnRefresh;
@@ -306,5 +304,6 @@ namespace CinameAsset
         private System.Windows.Forms.DataGridViewTextBoxColumn colStockState;
         private System.Windows.Forms.DataGridViewTextBoxColumn colShortage;
         private System.Windows.Forms.DataGridViewTextBoxColumn colPctOfMin;
+        private System.Windows.Forms.Label label1;
     }
 }
