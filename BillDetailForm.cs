@@ -13,7 +13,8 @@ namespace CinameAsset
         public BillDetailForm(string connectionString, int billId)
         {
             InitializeComponent();
-            this.connectionString = connectionString;
+            // Sử dụng connection string động từ SessionManager thay vì tham số
+            this.connectionString = SessionManager.GetConnectionString();
             this.billId = billId;
         }
 

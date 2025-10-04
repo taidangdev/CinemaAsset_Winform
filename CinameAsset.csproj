@@ -121,6 +121,20 @@
     <Compile Include="AddSeatControl.Designer.cs">
       <DependentUpon>AddSeatControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegisterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserManagementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserProfileForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SecurityHelper.cs" />
+    <Compile Include="SessionManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -130,6 +144,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InfrastructureManagement.resx">
       <DependentUpon>InfrastructureManagement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegisterForm.resx">
+      <DependentUpon>RegisterForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="VendorManagement.resx">
       <DependentUpon>VendorManagement.cs</DependentUpon>
@@ -182,6 +199,7 @@
     <None Include="packages.config" />
     <None Include="App.config" />
     <None Include="README.md" />
+    <None Include="RBAC_Implementation_Guide.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />

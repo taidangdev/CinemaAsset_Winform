@@ -11,10 +11,13 @@ namespace CinameAsset
 {
     public partial class InfrastructureManagement : Form
     {
-        private string connectionString = "Server=localhost;Database=CinemaAssetDB;User Id=sa;Password=1234;";
-
+        //private string connectionString = "Server=localhost;Database=CinemaAssetDB;User Id=sa;Password=1234;";
+        private string connectionString;
         public InfrastructureManagement()
         {
+            // LẤY CHUỖI KẾT NỐI ĐỘNG CỦA USER KHI FORM ĐƯỢC KHỞI TẠO
+            this.connectionString = SessionManager.CurrentUserConnectionString; // <-- FIX CHÍNH
+
             InitializeComponent();
             this.cmbAuditorium.SelectionChangeCommitted += cmbAuditorium_SelectionChangeCommitted;
             this.cmbAssetType.SelectionChangeCommitted += cmbAssetType_SelectionChangeCommitted;
@@ -360,9 +363,26 @@ namespace CinameAsset
                     }
                 }
             }
+            catch (SqlException sqlEx)
+            {
+                // Lỗi 229: Permission Denied - RBAC chặn Staff thực hiện thao tác
+                if (sqlEx.Number == 229 || sqlEx.Message.Contains("permission was denied"))
+                {
+                    MessageBox.Show(
+                        "LỖI PHÂN QUYỀN: Tài khoản của bạn không có quyền thực hiện thao tác quản lý này.",
+                        "Truy cập bị từ chối",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Stop);
+                }
+                else
+                {
+                    MessageBox.Show($"Lỗi CSDL: {sqlEx.Message}", "Lỗi SQL", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi cập nhật trạng thái: {ex.Message}", "Lỗi", 
+                MessageBox.Show($"Lỗi hệ thống: {ex.Message}", "Lỗi", 
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -412,9 +432,26 @@ namespace CinameAsset
                     }
                 }
             }
+            catch (SqlException sqlEx)
+            {
+                // Lỗi 229: Permission Denied - RBAC chặn Staff thực hiện thao tác
+                if (sqlEx.Number == 229 || sqlEx.Message.Contains("permission was denied"))
+                {
+                    MessageBox.Show(
+                        "LỖI PHÂN QUYỀN: Tài khoản của bạn không có quyền thực hiện thao tác quản lý này.",
+                        "Truy cập bị từ chối",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Stop);
+                }
+                else
+                {
+                    MessageBox.Show($"Lỗi CSDL: {sqlEx.Message}", "Lỗi SQL", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi xóa thiết bị: {ex.Message}", "Lỗi", 
+                MessageBox.Show($"Lỗi hệ thống: {ex.Message}", "Lỗi", 
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

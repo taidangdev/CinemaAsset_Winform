@@ -13,7 +13,10 @@ namespace CinameAsset
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            
+            // Chạy RegisterForm để tạo tài khoản Admin ban đầu
+            // Sau khi tạo xong, người dùng có thể chuyển sang LoginForm
+            Application.Run(new RegisterForm());
         }
     }
 }

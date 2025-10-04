@@ -15,7 +15,8 @@ namespace CinameAsset
         public AddVendorForm(string connectionString)
         {
             InitializeComponent();
-            this.connectionString = connectionString;
+            // Sử dụng connection string động từ SessionManager thay vì tham số
+            this.connectionString = SessionManager.GetConnectionString();
         }
 
         private void AddVendorForm_Load(object sender, EventArgs e)
@@ -140,9 +141,26 @@ namespace CinameAsset
                     }
                 }
             }
+            catch (SqlException sqlEx)
+            {
+                // Lỗi 229: Permission Denied - RBAC chặn Staff thực hiện thao tác
+                if (sqlEx.Number == 229 || sqlEx.Message.Contains("permission was denied"))
+                {
+                    MessageBox.Show(
+                        "LỖI PHÂN QUYỀN: Tài khoản của bạn không có quyền thực hiện thao tác quản lý này.",
+                        "Truy cập bị từ chối",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Stop);
+                }
+                else
+                {
+                    MessageBox.Show($"Lỗi CSDL: {sqlEx.Message}", "Lỗi SQL", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi thêm đối tác: {ex.Message}", "Lỗi", 
+                MessageBox.Show($"Lỗi hệ thống: {ex.Message}", "Lỗi", 
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

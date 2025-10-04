@@ -42,7 +42,6 @@ GRANT EXECUTE ON OBJECT::sp_FilterShowTimes TO NhanVien;
 
 
 -- Procedure tạo LOGIN + USER + gán ROLE
-GO
 CREATE OR ALTER PROCEDURE sp_CreateSQLLogin
     @Username NVARCHAR(50),
     @Password NVARCHAR(MAX),

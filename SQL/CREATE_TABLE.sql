@@ -326,8 +326,6 @@ INSERT INTO AssetType(name) VALUES
  (N'SPEAKER'),
  (N'AIR_CON');
 
-/* Lấy id nhanh (chỉ để tham khảo) */
-SELECT * FROM AssetType;
 
 /* ========= VENDOR ========= */
 INSERT INTO Vendor(name, phone, email, address) VALUES
@@ -336,7 +334,6 @@ INSERT INTO Vendor(name, phone, email, address) VALUES
  (N'DolbySound Co', N'0903-456-789', N'contact@dolbysound.com', N'88 Pasteur, Q3'),
  (N'CoolAir VN',    N'0904-567-890', N'support@coolair.vn', N'12 Nguyễn Huệ, Q1');
 
-SELECT * FROM Vendor;
 /* ========= VENDOR CATALOG =========*/
 -- SeatingPro: SEAT + SCREEN
 INSERT INTO VendorCatalog(vendor_id, asset_type_id, is_active)
@@ -366,7 +363,7 @@ FROM Vendor v
 JOIN AssetType a ON a.name = N'AIR_CON'
 WHERE v.name = N'CoolAir VN';
 
-SELECT * FROM VendorCatalog ORDER BY vendor_id, asset_type_id;
+
 
 
 /* ========= WAREHOUSE =========
@@ -388,7 +385,6 @@ SELECT asset_type_id,
        END
 FROM AssetType;
 
-SELECT * FROM Warehouse ORDER BY asset_type_id;
 
 
 /* ========= SEAT =========

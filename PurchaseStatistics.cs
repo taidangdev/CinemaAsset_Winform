@@ -12,7 +12,8 @@ namespace CinameAsset
         public PurchaseStatistics(string connectionString)
         {
             InitializeComponent();
-            this.connectionString = connectionString;
+            // Sử dụng connection string động từ SessionManager thay vì tham số
+            this.connectionString = SessionManager.GetConnectionString();
         }
 
         private void PurchaseStatistics_Load(object sender, EventArgs e)
@@ -82,7 +83,7 @@ namespace CinameAsset
                 {
                     conn.Open();
                     
-                    // === BƯỚC MỚI: TÍNH TỔNG SỐ HÓA ĐƠN ===
+                    // === LỆNH 1: TÍNH TỔNG SỐ HÓA ĐƠN (Scalar Function) ===
                     using (SqlCommand countCmd = new SqlCommand("SELECT dbo.fn_GetTotalBillCount(@date_from, @date_to, @vendor_id)", conn))
                     {
                         countCmd.Parameters.AddWithValue("@date_from", dateFrom.HasValue ? (object)dateFrom.Value : DBNull.Value);
@@ -94,17 +95,15 @@ namespace CinameAsset
                         lblTotalBillsCount.Text = $"Tổng số hóa đơn: {totalCount}";
                     }
                     
-                    using (SqlCommand cmd = new SqlCommand("sp_PurchaseStats_ListAndTotal", conn))
+                    // === LỆNH 2: DANH SÁCH HÓA ĐƠN (Table-Valued Function) ===
+                    using (SqlCommand listCmd = new SqlCommand("SELECT * FROM dbo.fn_BillSummary(@date_from, @date_to, @vendor_id)", conn))
                     {
-                        cmd.CommandType = CommandType.StoredProcedure;
+                        listCmd.Parameters.AddWithValue("@date_from", dateFrom.HasValue ? (object)dateFrom.Value : DBNull.Value);
+                        listCmd.Parameters.AddWithValue("@date_to", dateTo.HasValue ? (object)dateTo.Value : DBNull.Value);
+                        listCmd.Parameters.AddWithValue("@vendor_id", vendorId.HasValue ? (object)vendorId.Value : DBNull.Value);
                         
-                        cmd.Parameters.AddWithValue("@date_from", dateFrom.HasValue ? (object)dateFrom.Value : DBNull.Value);
-                        cmd.Parameters.AddWithValue("@date_to", dateTo.HasValue ? (object)dateTo.Value : DBNull.Value);
-                        cmd.Parameters.AddWithValue("@vendor_id", vendorId.HasValue ? (object)vendorId.Value : DBNull.Value);
-                        
-                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        using (SqlDataReader reader = listCmd.ExecuteReader())
                         {
-                            // Result Set 1: Danh sách hóa đơn
                             dgvBills.Rows.Clear();
                             
                             while (reader.Read())
@@ -120,19 +119,19 @@ namespace CinameAsset
                                 // Lưu bill_id để dùng khi click Detail
                                 row.Tag = reader["bill_id"];
                             }
-                            
-                            // Result Set 2: Tổng chi
-                            if (reader.NextResult() && reader.Read())
-                            {
-                                decimal totalSpent = reader["total_spent"] != DBNull.Value ? 
-                                    Convert.ToDecimal(reader["total_spent"]) : 0;
-                                lblTotalSpent.Text = totalSpent.ToString("N0") + " VNĐ";
-                            }
-                            else
-                            {
-                                lblTotalSpent.Text = "0 VNĐ";
-                            }
                         }
+                    }
+                    
+                    // === LỆNH 3: TỔNG CHI (Scalar Function) ===
+                    using (SqlCommand totalCmd = new SqlCommand("SELECT dbo.fn_TotalPurchase(@date_from, @date_to, @vendor_id)", conn))
+                    {
+                        totalCmd.Parameters.AddWithValue("@date_from", dateFrom.HasValue ? (object)dateFrom.Value : DBNull.Value);
+                        totalCmd.Parameters.AddWithValue("@date_to", dateTo.HasValue ? (object)dateTo.Value : DBNull.Value);
+                        totalCmd.Parameters.AddWithValue("@vendor_id", vendorId.HasValue ? (object)vendorId.Value : DBNull.Value);
+
+                        var result = totalCmd.ExecuteScalar();
+                        decimal totalSpent = (result != null && result != DBNull.Value) ? Convert.ToDecimal(result) : 0;
+                        lblTotalSpent.Text = totalSpent.ToString("N0") + " VNĐ";
                     }
                 }
             }

@@ -22,38 +22,50 @@ RETURN
 );
 GO
 
--- 2 TVF: tổng số tiền đã nhập trong kỳ (để đổ vào textbox Total)
-
+-- 2 scarlar: tổng số tiền đã nhập trong kỳ (để đổ vào textbox Total)
 CREATE OR ALTER FUNCTION dbo.fn_TotalPurchase
 (
   @date_from DATE = NULL,
   @date_to   DATE = NULL,
   @vendor_id INT  = NULL
 )
-RETURNS TABLE
+RETURNS DECIMAL(18,2)
 AS
-RETURN
-(
-  SELECT SUM(b.total_amount) AS total_spent
-  FROM Bill b
-  WHERE (@date_from IS NULL OR b.bill_date >= @date_from)
-    AND (@date_to   IS NULL OR b.bill_date <= @date_to)
-    AND (@vendor_id IS NULL OR b.vendor_id = @vendor_id)
-);
+BEGIN
+    -- Khai báo biến để chứa kết quả duy nhất
+    DECLARE @total_spent DECIMAL(18,2);
+    
+    -- Thực hiện tính toán và gán vào biến
+    SELECT @total_spent = SUM(b.total_amount)
+    FROM Bill b
+    WHERE (@date_from IS NULL OR b.bill_date >= @date_from)
+      AND (@date_to   IS NULL OR b.bill_date <= @date_to)
+      AND (@vendor_id IS NULL OR b.vendor_id = @vendor_id);
+
+    -- 2. Trả về biến đó
+    RETURN ISNULL(@total_spent, 0); -- Dùng ISNULL để trả về 0 nếu không có hóa đơn nào thỏa mãn.
+END
 GO
 
---3) (tiện cho WinForms) Proc trả 2 result sets: danh sách + tổng
-CREATE OR ALTER PROCEDURE dbo.sp_PurchaseStats_ListAndTotal
+-- 3 tính tổng số hóa đơn theo lọc
+CREATE OR ALTER FUNCTION dbo.fn_GetTotalBillCount
+(
   @date_from DATE = NULL,
   @date_to   DATE = NULL,
   @vendor_id INT  = NULL
+)
+RETURNS INT
 AS
 BEGIN
-  SET NOCOUNT ON;
-  -- RS1: danh sách hóa đơn
-  SELECT * FROM dbo.fn_BillSummary(@date_from, @date_to, @vendor_id) ORDER BY created_at DESC;
-  -- RS2: tổng chi
-  SELECT total_spent FROM dbo.fn_TotalPurchase(@date_from, @date_to, @vendor_id);
+    DECLARE @Count INT;
+    
+    SELECT @Count = COUNT(b.bill_id)
+    FROM dbo.Bill b
+    WHERE (@date_from IS NULL OR b.bill_date >= @date_from)
+      AND (@date_to   IS NULL OR b.bill_date <= @date_to)
+      AND (@vendor_id IS NULL OR b.vendor_id = @vendor_id);
+
+    RETURN ISNULL(@Count, 0);
 END
 GO
 
@@ -83,27 +95,7 @@ BEGIN
 END
 GO
 
--- tính tổng số hóa đơn theo lọc
-CREATE OR ALTER FUNCTION dbo.fn_GetTotalBillCount
-(
-  @date_from DATE = NULL,
-  @date_to   DATE = NULL,
-  @vendor_id INT  = NULL
-)
-RETURNS INT
-AS
-BEGIN
-    DECLARE @Count INT;
-    
-    SELECT @Count = COUNT(b.bill_id)
-    FROM dbo.Bill b
-    WHERE (@date_from IS NULL OR b.bill_date >= @date_from)
-      AND (@date_to   IS NULL OR b.bill_date <= @date_to)
-      AND (@vendor_id IS NULL OR b.vendor_id = @vendor_id);
 
-    RETURN ISNULL(@Count, 0);
-END
-GO
 
 
 --Kiểm tra trạng thái tồn kho thấp (LOW) cho một loại hàng.

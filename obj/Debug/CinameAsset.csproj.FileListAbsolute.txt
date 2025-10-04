@@ -30,6 +30,7 @@ D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\bin\Debug\Newtonsoft.Json.xml
 D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.csproj.AssemblyReference.cache
 D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.MainForm.resources
 D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.InfrastructureManagement.resources
+D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.RegisterForm.resources
 D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.VendorManagement.resources
 D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.AddVendorForm.resources
 D:\STUDY\NAM3\DBMS\PROJECT_FINAL\CinameAsset\obj\Debug\CinameAsset.EditVendorForm.resources

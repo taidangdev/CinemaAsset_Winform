@@ -13,7 +13,8 @@ namespace CinameAsset
         public WarehouseManagement(string connectionString)
         {
             InitializeComponent();
-            this.connectionString = connectionString;
+            // Sử dụng connection string động từ SessionManager thay vì tham số
+            this.connectionString = SessionManager.GetConnectionString();
         }
 
         private void WarehouseManagement_Load(object sender, EventArgs e)
