@@ -1,23 +1,7 @@
 ﻿use CinemaAssetDB
 go
 
---View: danh sách hóa đơn gần đây (header)
-
-CREATE OR ALTER VIEW dbo.vw_RecentBills AS
-SELECT TOP (300)
-  b.bill_id,
-  b.bill_no,
-  b.bill_date,
-  v.name      AS vendor_name,
-  b.total_amount,
-  b.created_at
-FROM Bill b
-JOIN Vendor v ON v.vendor_id = b.vendor_id
-ORDER BY b.created_at DESC;
-GO
-
---TVF: lọc mềm theo khoảng ngày & vendor (dùng cho bộ lọc UI)
-
+--1 TVF: lọc mềm theo khoảng ngày & vendor (dùng cho bộ lọc UI)
 CREATE OR ALTER FUNCTION dbo.fn_BillSummary
 (
   @date_from DATE = NULL,
@@ -38,7 +22,7 @@ RETURN
 );
 GO
 
--- 3) TVF: tổng số tiền đã nhập trong kỳ (để đổ vào textbox Total)
+-- 2 TVF: tổng số tiền đã nhập trong kỳ (để đổ vào textbox Total)
 
 CREATE OR ALTER FUNCTION dbo.fn_TotalPurchase
 (
@@ -58,22 +42,7 @@ RETURN
 );
 GO
 
-
---4) View: chi tiết 1 hóa đơn (để xem khi bấm nút “Chi tiết”)
-CREATE OR ALTER VIEW dbo.vw_BillDetail AS
-SELECT
-  b.bill_id, b.bill_no, b.bill_date,
-  b.vendor_id, v.name AS vendor_name,
-  bi.bill_item_id, bi.asset_type_id, at.name AS asset_type_name,
-  bi.qty, bi.unit_cost, (bi.qty * bi.unit_cost) AS line_total,
-  b.total_amount
-FROM Bill b
-JOIN Vendor v    ON v.vendor_id = b.vendor_id
-LEFT JOIN BillItem bi ON bi.bill_id = b.bill_id
-LEFT JOIN AssetType at ON at.asset_type_id = bi.asset_type_id;
-GO
-
---5) (tiện cho WinForms) Proc trả 2 result sets: danh sách + tổng
+--3) (tiện cho WinForms) Proc trả 2 result sets: danh sách + tổng
 CREATE OR ALTER PROCEDURE dbo.sp_PurchaseStats_ListAndTotal
   @date_from DATE = NULL,
   @date_to   DATE = NULL,
@@ -89,7 +58,7 @@ END
 GO
 
 
---6) (tiện cho nút) Proc trả chi tiết 1 bill (2 RS: header + items) 
+--4) (tiện cho nút) Proc trả chi tiết 1 bill (2 RS: header + items) 
 --Trong tab “Thống kê nhập hàng” bạn có DataGridView hiển thị danh sách Bill (bill_no, ngày, vendor, total_amount).
 
 --Khi người dùng bấm nút “Chi tiết” ở cuối mỗi dòng, bạn cần hiện thêm thông tin:
@@ -114,7 +83,7 @@ BEGIN
 END
 GO
 
--- tính tổng hóa đơn theo lọc
+-- tính tổng số hóa đơn theo lọc
 CREATE OR ALTER FUNCTION dbo.fn_GetTotalBillCount
 (
   @date_from DATE = NULL,

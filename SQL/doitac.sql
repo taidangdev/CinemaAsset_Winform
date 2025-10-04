@@ -1,57 +1,56 @@
-﻿use CinemaAssetDB
+use CinemaAssetDB
 go
 
--- view hiển thị đối tác còn hợp tác
-CREATE OR ALTER VIEW dbo.vw_VendorActiveWithCatalog AS
-SELECT
-  v.vendor_id,
-  v.name,
-  v.phone,
-  v.email,
-  v.address,
-  STRING_AGG(ui.[display], N', ') WITHIN GROUP (ORDER BY ui.[display]) AS asset_types -- đã Việt hoá
-FROM dbo.Vendor v
-LEFT JOIN dbo.VendorCatalog vc
-  ON vc.vendor_id = v.vendor_id AND vc.is_active = 1
-LEFT JOIN dbo.vw_AssetTypes_UI ui
-  ON ui.[key] = vc.asset_type_id
-WHERE v.is_active = 1
-GROUP BY v.vendor_id, v.name, v.phone, v.email, v.address;
-GO
 
-
---View (bảng hàng) để bind combobox/chi tiết: Vendor ↔ AssetType (dạng dòng)
-CREATE OR ALTER VIEW dbo.vw_VendorCatalogActive AS
-SELECT
-  v.vendor_id,
-  v.name AS vendor_name,
-  at.asset_type_id,
-  at.name AS asset_type_name,      -- mã gốc (SCREEN, ...)
-  ui.[display] AS asset_type_display -- tên Việt hoá
-FROM dbo.Vendor v
-JOIN dbo.VendorCatalog vc
-  ON vc.vendor_id = v.vendor_id AND vc.is_active = 1
-JOIN dbo.AssetType at
-  ON at.asset_type_id = vc.asset_type_id
-JOIN dbo.vw_AssetTypes_UI ui
-  ON ui.[key] = at.asset_type_id
-WHERE v.is_active = 1;
-GO
-
-
-
-
---TVF: lấy danh sách loại hàng 1 vendor (dễ dùng trong SELECT có tham số)
-CREATE OR ALTER FUNCTION dbo.fn_VendorAssetTypes(@vendor_id INT)
+-- Function trả về thông tin chi tiết đối tác (với asset_types đã aggregate)
+CREATE OR ALTER FUNCTION dbo.fn_VendorInfo(@vendor_id INT = NULL)
 RETURNS TABLE
 AS
-RETURN (
-  SELECT at.asset_type_id, at.name AS asset_type_name
-  FROM VendorCatalog vc
-  JOIN AssetType at ON at.asset_type_id = vc.asset_type_id
-  WHERE vc.vendor_id = @vendor_id AND vc.is_active = 1
+RETURN
+(
+    SELECT 
+        v.vendor_id,
+        v.name,
+        v.phone,
+        v.email,
+        v.address,
+        STRING_AGG(ui.[display], N', ') WITHIN GROUP (ORDER BY ui.[display]) AS asset_types
+    FROM dbo.Vendor v
+    LEFT JOIN dbo.VendorCatalog vc 
+        ON vc.vendor_id = v.vendor_id AND vc.is_active = 1
+    LEFT JOIN dbo.vw_AssetTypes_UI ui 
+        ON ui.[key] = vc.asset_type_id
+    WHERE v.is_active = 1
+      AND (@vendor_id IS NULL OR v.vendor_id = @vendor_id)
+    GROUP BY v.vendor_id, v.name, v.phone, v.email, v.address
 );
 GO
+
+-- Function trả về catalog (vendor ↔ asset_type) - dùng cho dropdown, filter
+CREATE OR ALTER FUNCTION dbo.fn_VendorCatalog(@vendor_id INT = NULL)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT
+      v.vendor_id,
+      v.name AS vendor_name,
+      at.asset_type_id,
+      at.name AS asset_type_name,      -- Mã gốc (ví dụ: 'SEAT')
+      ui.[display] AS asset_type_display -- Tên Việt hoá (ví dụ: 'Ghế')
+    FROM dbo.Vendor v
+    JOIN dbo.VendorCatalog vc
+      ON vc.vendor_id = v.vendor_id AND vc.is_active = 1
+    JOIN dbo.AssetType at
+      ON at.asset_type_id = vc.asset_type_id
+    JOIN dbo.vw_AssetTypes_UI ui
+      ON ui.[key] = at.asset_type_id
+    WHERE v.is_active = 1
+      -- Áp dụng lọc theo tham số tùy chọn
+      AND (@vendor_id IS NULL OR v.vendor_id = @vendor_id)
+);
+GO
+
 
 
 --Thêm đối tác mới kèm danh mục cung cấp (JSON)
@@ -91,50 +90,77 @@ BEGIN
   ON (tgt.vendor_id = src.vendor_id AND tgt.asset_type_id = src.asset_type_id)
   WHEN MATCHED THEN UPDATE SET is_active = 1
   WHEN NOT MATCHED THEN INSERT(vendor_id, asset_type_id, is_active) VALUES(src.vendor_id, src.asset_type_id, 1);
-
-  -- không động chạm các map khác (nếu có)
 END
 GO
 
---Cập nhật danh mục cung cấp của 1 vendor (set theo JSON)
-CREATE OR ALTER PROCEDURE dbo.sp_VendorCatalog_Set
+--Cập nhật toàn diện thông tin Vendor + Catalog
+CREATE OR ALTER PROCEDURE dbo.sp_Vendor_UpdateFull
   @vendor_id INT,
-  @AssetTypesJson NVARCHAR(MAX)
+  @name NVARCHAR(200),
+  @phone NVARCHAR(30) = NULL,
+  @email NVARCHAR(120) = NULL,
+  @address NVARCHAR(300) = NULL,
+  @AssetTypesJson NVARCHAR(MAX) = NULL
 AS
 BEGIN
   SET NOCOUNT ON;
-
-  IF NOT EXISTS (SELECT 1 FROM Vendor WHERE vendor_id=@vendor_id AND is_active=1)
-  BEGIN
-    RAISERROR(N'Vendor không tồn tại hoặc đã ngưng hợp tác.',16,1); RETURN;
-  END
-
-  DECLARE @T TABLE(asset_type_id INT PRIMARY KEY);
-
-  INSERT INTO @T(asset_type_id)
-  SELECT COALESCE(
-           TRY_CONVERT(INT, JSON_VALUE(j.value,'$.asset_type_id')),
-           (SELECT asset_type_id FROM AssetType WHERE name = JSON_VALUE(j.value,'$.asset_type_name'))
-         )
-  FROM OPENJSON(@AssetTypesJson) j;
-
-  DELETE FROM @T WHERE asset_type_id IS NULL;
-
-  -- bật những loại trong JSON
-  MERGE VendorCatalog AS tgt
-  USING (SELECT @vendor_id AS vendor_id, t.asset_type_id FROM @T t) src
-  ON (tgt.vendor_id = src.vendor_id AND tgt.asset_type_id = src.asset_type_id)
-  WHEN MATCHED THEN UPDATE SET is_active = 1
-  WHEN NOT MATCHED THEN INSERT(vendor_id, asset_type_id, is_active) VALUES(src.vendor_id, src.asset_type_id, 1);
-
-  -- tắt những loại không còn trong JSON
-  UPDATE VendorCatalog
-  SET is_active = 0
-  WHERE vendor_id=@vendor_id
-    AND asset_type_id NOT IN (SELECT asset_type_id FROM @T);
+  
+  BEGIN TRY
+    BEGIN TRANSACTION;
+    
+    -- Kiểm tra vendor tồn tại
+    IF NOT EXISTS (SELECT 1 FROM Vendor WHERE vendor_id=@vendor_id AND is_active=1)
+    BEGIN
+      RAISERROR(N'Vendor không tồn tại hoặc đã ngưng hợp tác.',16,1);
+      ROLLBACK TRANSACTION;
+      RETURN;
+    END
+    
+    -- KHỐI 1: Cập nhật thông tin Vendor
+    UPDATE Vendor
+    SET name = @name,
+        phone = @phone,
+        email = @email,
+        address = @address
+    WHERE vendor_id = @vendor_id;
+    
+    -- KHỐI 2: Cập nhật VendorCatalog (nếu có JSON)
+    IF @AssetTypesJson IS NOT NULL AND LEN(@AssetTypesJson) > 0
+    BEGIN
+      DECLARE @T TABLE(asset_type_id INT PRIMARY KEY);
+      
+      INSERT INTO @T(asset_type_id)
+      SELECT COALESCE(
+               TRY_CONVERT(INT, JSON_VALUE(j.value,'$.asset_type_id')),
+               (SELECT asset_type_id FROM AssetType WHERE name = JSON_VALUE(j.value,'$.asset_type_name'))
+             )
+      FROM OPENJSON(@AssetTypesJson) j;
+      
+      DELETE FROM @T WHERE asset_type_id IS NULL;
+      
+      -- Bật những loại trong JSON
+      MERGE VendorCatalog AS tgt
+      USING (SELECT @vendor_id AS vendor_id, t.asset_type_id FROM @T t) src
+      ON (tgt.vendor_id = src.vendor_id AND tgt.asset_type_id = src.asset_type_id)
+      WHEN MATCHED THEN UPDATE SET is_active = 1
+      WHEN NOT MATCHED THEN INSERT(vendor_id, asset_type_id, is_active) VALUES(src.vendor_id, src.asset_type_id, 1);
+      
+      -- Tắt những loại không còn trong JSON
+      UPDATE VendorCatalog
+      SET is_active = 0
+      WHERE vendor_id=@vendor_id
+        AND asset_type_id NOT IN (SELECT asset_type_id FROM @T);
+    END
+    
+    COMMIT TRANSACTION;
+  END TRY
+  BEGIN CATCH
+    IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+    DECLARE @err NVARCHAR(4000) = ERROR_MESSAGE();
+    RAISERROR(@err, 16, 1);
+  END CATCH
 END
 GO
-
 
 --Dừng hợp tác / Xóa mềm đối tác .Tắt is_active của Vendor và toàn bộ VendorCatalog.
 CREATE OR ALTER PROCEDURE dbo.sp_Vendor_StopCooperation

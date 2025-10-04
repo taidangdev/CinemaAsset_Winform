@@ -27,7 +27,7 @@ namespace CinameAsset
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT * FROM vw_VendorActiveWithCatalog ORDER BY name";
+                    string query = "SELECT * FROM dbo.fn_VendorInfo(NULL) ORDER BY name";
                     
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
@@ -75,10 +75,19 @@ namespace CinameAsset
         {
             if (e.RowIndex < 0) return;
 
-            if (e.ColumnIndex == dgvVendors.Columns["colStopCooperation"].Index)
+            DataGridViewRow row = dgvVendors.Rows[e.RowIndex];
+            int vendorId = Convert.ToInt32(row.Cells["colVendorId"].Value);
+
+            // Xử lý nút "Sửa"
+            if (e.ColumnIndex == dgvVendors.Columns["colEdit"].Index)
             {
-                DataGridViewRow row = dgvVendors.Rows[e.RowIndex];
-                int vendorId = Convert.ToInt32(row.Cells["colVendorId"].Value);
+                EditVendorForm editForm = new EditVendorForm(connectionString, vendorId);
+                editForm.VendorUpdated += (s, args) => LoadVendors();
+                editForm.ShowDialog(this);
+            }
+            // Xử lý nút "Dừng Hợp Tác"
+            else if (e.ColumnIndex == dgvVendors.Columns["colStopCooperation"].Index)
+            {
                 string vendorName = row.Cells["colVendorName"].Value.ToString();
 
                 DialogResult result = MessageBox.Show(

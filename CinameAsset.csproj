@@ -79,6 +79,12 @@
     <Compile Include="AddVendorForm.Designer.cs">
       <DependentUpon>AddVendorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditVendorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditVendorForm.Designer.cs">
+      <DependentUpon>EditVendorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PurchaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,6 +136,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddVendorForm.resx">
       <DependentUpon>AddVendorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditVendorForm.resx">
+      <DependentUpon>EditVendorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PurchaseForm.resx">
       <DependentUpon>PurchaseForm.cs</DependentUpon>

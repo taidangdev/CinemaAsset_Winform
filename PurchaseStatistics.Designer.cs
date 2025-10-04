@@ -28,6 +28,7 @@ namespace CinameAsset
             this.lblFrom = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2Panel3 = new Guna.UI2.WinForms.Guna2Panel();
             this.lblTotalSpent = new System.Windows.Forms.Label();
+            this.lblTotalBillsCount = new System.Windows.Forms.Label();
             this.dgvBills = new Guna.UI2.WinForms.Guna2DataGridView();
             this.colBillNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colBillDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -154,6 +155,7 @@ namespace CinameAsset
             // 
             this.guna2Panel3.BackColor = System.Drawing.Color.White;
             this.guna2Panel3.BorderRadius = 10;
+            this.guna2Panel3.Controls.Add(this.lblTotalBillsCount);
             this.guna2Panel3.Controls.Add(this.label1);
             this.guna2Panel3.Controls.Add(this.lblTotalSpent);
             this.guna2Panel3.Controls.Add(this.dgvBills);
@@ -172,6 +174,17 @@ namespace CinameAsset
             this.lblTotalSpent.Name = "lblTotalSpent";
             this.lblTotalSpent.Size = new System.Drawing.Size(0, 25);
             this.lblTotalSpent.TabIndex = 7;
+            // 
+            // lblTotalBillsCount
+            // 
+            this.lblTotalBillsCount.AutoSize = true;
+            this.lblTotalBillsCount.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalBillsCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(81)))), ((int)(((byte)(181)))));
+            this.lblTotalBillsCount.Location = new System.Drawing.Point(13, 13);
+            this.lblTotalBillsCount.Name = "lblTotalBillsCount";
+            this.lblTotalBillsCount.Size = new System.Drawing.Size(173, 23);
+            this.lblTotalBillsCount.TabIndex = 8;
+            this.lblTotalBillsCount.Text = "Tổng số hóa đơn: 0";
             // 
             // dgvBills
             // 
@@ -349,6 +362,7 @@ namespace CinameAsset
         private System.Windows.Forms.DataGridViewTextBoxColumn colTotalAmount;
         private System.Windows.Forms.DataGridViewButtonColumn colDetail;
         private System.Windows.Forms.Label lblTotalSpent;
+        private System.Windows.Forms.Label lblTotalBillsCount;
         private Guna.UI2.WinForms.Guna2Button btnRefresh;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;

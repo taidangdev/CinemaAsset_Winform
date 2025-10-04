@@ -28,6 +28,7 @@ namespace CinameAsset
             this.colEmail = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colAssetTypes = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colEdit = new System.Windows.Forms.DataGridViewButtonColumn();
             this.colStopCooperation = new System.Windows.Forms.DataGridViewButtonColumn();
             this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2Panel3 = new Guna.UI2.WinForms.Guna2Panel();
@@ -109,6 +110,7 @@ namespace CinameAsset
             this.colEmail,
             this.colAddress,
             this.colAssetTypes,
+            this.colEdit,
             this.colStopCooperation});
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
@@ -194,6 +196,15 @@ namespace CinameAsset
             this.colAssetTypes.Name = "colAssetTypes";
             this.colAssetTypes.ReadOnly = true;
             // 
+            // colEdit
+            // 
+            this.colEdit.HeaderText = "Sửa";
+            this.colEdit.MinimumWidth = 6;
+            this.colEdit.Name = "colEdit";
+            this.colEdit.ReadOnly = true;
+            this.colEdit.Text = "Sửa";
+            this.colEdit.UseColumnTextForButtonValue = true;
+            // 
             // colStopCooperation
             // 
             this.colStopCooperation.HeaderText = "Hành Động";
@@ -270,6 +281,7 @@ namespace CinameAsset
         private System.Windows.Forms.DataGridViewTextBoxColumn colEmail;
         private System.Windows.Forms.DataGridViewTextBoxColumn colAddress;
         private System.Windows.Forms.DataGridViewTextBoxColumn colAssetTypes;
+        private System.Windows.Forms.DataGridViewButtonColumn colEdit;
         private System.Windows.Forms.DataGridViewButtonColumn colStopCooperation;
         private Guna.UI2.WinForms.Guna2Panel guna2Panel2;
         private Guna.UI2.WinForms.Guna2Panel guna2Panel3;

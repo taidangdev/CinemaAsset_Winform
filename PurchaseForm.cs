@@ -32,7 +32,7 @@ namespace CinameAsset
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT vendor_id, name FROM dbo.vw_VendorActiveWithCatalog";
+                    string query = "SELECT DISTINCT vendor_id, vendor_name AS name FROM dbo.fn_VendorCatalog(NULL) ORDER BY vendor_name";
                     
                     SqlDataAdapter da = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
@@ -82,8 +82,7 @@ namespace CinameAsset
                 {
                     conn.Open();
                     string query = @"SELECT asset_type_id, asset_type_display AS [display]
-                                        FROM dbo.vw_VendorCatalogActive
-                                        WHERE vendor_id = @vendor_id
+                                        FROM dbo.fn_VendorCatalog(@vendor_id)
                                         ORDER BY asset_type_display;";
                     
                     SqlDataAdapter da = new SqlDataAdapter(query, conn);

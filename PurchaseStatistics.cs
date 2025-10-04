@@ -36,7 +36,7 @@ namespace CinameAsset
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT vendor_id, name FROM vw_VendorActiveWithCatalog";
+                    string query = "SELECT DISTINCT vendor_id, vendor_name AS name FROM dbo.fn_VendorCatalog(NULL) ORDER BY vendor_name";
                     
                     SqlDataAdapter da = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
@@ -81,6 +81,18 @@ namespace CinameAsset
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
+                    
+                    // === BƯỚC MỚI: TÍNH TỔNG SỐ HÓA ĐƠN ===
+                    using (SqlCommand countCmd = new SqlCommand("SELECT dbo.fn_GetTotalBillCount(@date_from, @date_to, @vendor_id)", conn))
+                    {
+                        countCmd.Parameters.AddWithValue("@date_from", dateFrom.HasValue ? (object)dateFrom.Value : DBNull.Value);
+                        countCmd.Parameters.AddWithValue("@date_to", dateTo.HasValue ? (object)dateTo.Value : DBNull.Value);
+                        countCmd.Parameters.AddWithValue("@vendor_id", vendorId.HasValue ? (object)vendorId.Value : DBNull.Value);
+
+                        var result = countCmd.ExecuteScalar();
+                        int totalCount = Convert.ToInt32(result);
+                        lblTotalBillsCount.Text = $"Tổng số hóa đơn: {totalCount}";
+                    }
                     
                     using (SqlCommand cmd = new SqlCommand("sp_PurchaseStats_ListAndTotal", conn))
                     {
