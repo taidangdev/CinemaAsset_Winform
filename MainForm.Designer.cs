@@ -29,16 +29,15 @@ namespace CinameAsset
         private void InitializeComponent()
         {
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnLogout = new Guna.UI2.WinForms.Guna2Button();
             this.btnWarehouse = new Guna.UI2.WinForms.Guna2Button();
             this.btnStatistics = new Guna.UI2.WinForms.Guna2Button();
             this.btnVendors = new Guna.UI2.WinForms.Guna2Button();
             this.btnInfrastructure = new Guna.UI2.WinForms.Guna2Button();
-            this.btnUserProfile = new Guna.UI2.WinForms.Guna2Button();
-            this.btnUserManagement = new Guna.UI2.WinForms.Guna2Button();
-            this.btnLogout = new Guna.UI2.WinForms.Guna2Button();
             this.panelContent = new Guna.UI2.WinForms.Guna2Panel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.btnUserManagement = new Guna.UI2.WinForms.Guna2Button();
             this.guna2Panel1.SuspendLayout();
             this.guna2Panel2.SuspendLayout();
             this.SuspendLayout();
@@ -54,12 +53,23 @@ namespace CinameAsset
             this.guna2Panel1.Size = new System.Drawing.Size(1089, 95);
             this.guna2Panel1.TabIndex = 0;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label1.Location = new System.Drawing.Point(12, 24);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(360, 38);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Hệ Thống Quản Lý Tài Sản";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
             // guna2Panel2
             // 
             this.guna2Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(52)))), ((int)(((byte)(54)))));
             this.guna2Panel2.Controls.Add(this.btnLogout);
             this.guna2Panel2.Controls.Add(this.btnUserManagement);
-            this.guna2Panel2.Controls.Add(this.btnUserProfile);
             this.guna2Panel2.Controls.Add(this.btnWarehouse);
             this.guna2Panel2.Controls.Add(this.btnStatistics);
             this.guna2Panel2.Controls.Add(this.btnVendors);
@@ -70,6 +80,29 @@ namespace CinameAsset
             this.guna2Panel2.Name = "guna2Panel2";
             this.guna2Panel2.Size = new System.Drawing.Size(138, 579);
             this.guna2Panel2.TabIndex = 1;
+            // 
+            // btnLogout
+            // 
+            this.btnLogout.BorderRadius = 5;
+            this.btnLogout.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnLogout.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnLogout.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnLogout.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnLogout.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnLogout.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLogout.ForeColor = System.Drawing.Color.White;
+            this.btnLogout.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
+            this.btnLogout.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnLogout.ImageSize = new System.Drawing.Size(24, 24);
+            this.btnLogout.Location = new System.Drawing.Point(0, 452);
+            this.btnLogout.Margin = new System.Windows.Forms.Padding(5);
+            this.btnLogout.Name = "btnLogout";
+            this.btnLogout.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
+            this.btnLogout.Size = new System.Drawing.Size(138, 57);
+            this.btnLogout.TabIndex = 6;
+            this.btnLogout.Text = "Đăng xuất";
+            this.btnLogout.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
             // 
             // btnWarehouse
             // 
@@ -166,28 +199,15 @@ namespace CinameAsset
             this.btnInfrastructure.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnInfrastructure.Click += new System.EventHandler(this.btnInfrastructure_Click);
             // 
-            // btnUserProfile
+            // panelContent
             // 
-            this.btnUserProfile.BorderRadius = 5;
-            this.btnUserProfile.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnUserProfile.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnUserProfile.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnUserProfile.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnUserProfile.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnUserProfile.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUserProfile.ForeColor = System.Drawing.Color.White;
-            this.btnUserProfile.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
-            this.btnUserProfile.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnUserProfile.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnUserProfile.Location = new System.Drawing.Point(0, 395);
-            this.btnUserProfile.Margin = new System.Windows.Forms.Padding(5);
-            this.btnUserProfile.Name = "btnUserProfile";
-            this.btnUserProfile.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
-            this.btnUserProfile.Size = new System.Drawing.Size(138, 46);
-            this.btnUserProfile.TabIndex = 4;
-            this.btnUserProfile.Text = "Thông tin cá nhân";
-            this.btnUserProfile.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnUserProfile.Click += new System.EventHandler(this.btnUserProfile_Click);
+            this.panelContent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.panelContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelContent.Location = new System.Drawing.Point(138, 95);
+            this.panelContent.Margin = new System.Windows.Forms.Padding(5);
+            this.panelContent.Name = "panelContent";
+            this.panelContent.Size = new System.Drawing.Size(951, 579);
+            this.panelContent.TabIndex = 2;
             // 
             // btnUserManagement
             // 
@@ -202,60 +222,15 @@ namespace CinameAsset
             this.btnUserManagement.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
             this.btnUserManagement.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnUserManagement.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnUserManagement.Location = new System.Drawing.Point(0, 441);
+            this.btnUserManagement.Location = new System.Drawing.Point(0, 509);
             this.btnUserManagement.Margin = new System.Windows.Forms.Padding(5);
             this.btnUserManagement.Name = "btnUserManagement";
             this.btnUserManagement.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
-            this.btnUserManagement.Size = new System.Drawing.Size(138, 46);
+            this.btnUserManagement.Size = new System.Drawing.Size(138, 70);
             this.btnUserManagement.TabIndex = 5;
             this.btnUserManagement.Text = "Quản lý tài khoản";
             this.btnUserManagement.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnUserManagement.Click += new System.EventHandler(this.btnUserManagement_Click);
-            // 
-            // btnLogout
-            // 
-            this.btnLogout.BorderRadius = 5;
-            this.btnLogout.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnLogout.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnLogout.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnLogout.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnLogout.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnLogout.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLogout.ForeColor = System.Drawing.Color.White;
-            this.btnLogout.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
-            this.btnLogout.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnLogout.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnLogout.Location = new System.Drawing.Point(0, 487);
-            this.btnLogout.Margin = new System.Windows.Forms.Padding(5);
-            this.btnLogout.Name = "btnLogout";
-            this.btnLogout.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
-            this.btnLogout.Size = new System.Drawing.Size(138, 46);
-            this.btnLogout.TabIndex = 6;
-            this.btnLogout.Text = "Đăng xuất";
-            this.btnLogout.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
-            // 
-            // panelContent
-            // 
-            this.panelContent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.panelContent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelContent.Location = new System.Drawing.Point(138, 95);
-            this.panelContent.Margin = new System.Windows.Forms.Padding(5);
-            this.panelContent.Name = "panelContent";
-            this.panelContent.Size = new System.Drawing.Size(951, 579);
-            this.panelContent.TabIndex = 2;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label1.Location = new System.Drawing.Point(12, 24);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(360, 38);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Hệ Thống Quản Lý Tài Sản";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // MainForm
             // 
@@ -289,8 +264,7 @@ namespace CinameAsset
         private Guna.UI2.WinForms.Guna2Button btnWarehouse;
         private Guna.UI2.WinForms.Guna2Panel panelContent;
         private System.Windows.Forms.Label label1;
-        private Guna.UI2.WinForms.Guna2Button btnUserProfile;
-        private Guna.UI2.WinForms.Guna2Button btnUserManagement;
         private Guna.UI2.WinForms.Guna2Button btnLogout;
+        private Guna.UI2.WinForms.Guna2Button btnUserManagement;
     }
 }

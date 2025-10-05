@@ -41,8 +41,6 @@ namespace CinameAsset
 
         private void ApplyRoleBasedPermissions()
         {
-            // Tất cả user đều có quyền xem Profile
-            btnUserProfile.Visible = true;
             
             if (SessionManager.IsStaff)
             {
@@ -96,9 +94,6 @@ namespace CinameAsset
             btnVendors.FillColor = Color.FromArgb(45, 52, 54);
             btnStatistics.FillColor = Color.FromArgb(45, 52, 54);
             btnWarehouse.FillColor = Color.FromArgb(45, 52, 54);
-            
-            // Reset các button quản lý user
-            btnUserProfile.FillColor = Color.FromArgb(45, 52, 54);
             if (SessionManager.IsAdmin) 
                 btnUserManagement.FillColor = Color.FromArgb(45, 52, 54);
         }
@@ -188,15 +183,6 @@ namespace CinameAsset
             OpenChildForm(profileForm);
         }
 
-        // Event handler cho button User Profile
-        private void btnUserProfile_Click(object sender, EventArgs e)
-        {
-            // Reset button colors và set active
-            ResetButtonColors();
-            btnUserProfile.FillColor = Color.FromArgb(40, 167, 69); // Green color for profile
-            
-            ShowUserProfileForm();
-        }
 
         // Helper method để show RBAC status cho debugging
         public void ShowRBACStatus()
