@@ -164,7 +164,7 @@ namespace CinameAsset
             // 
             // RegisterForm
             // 
-            this.ClientSize = new System.Drawing.Size(432, 353);
+            this.ClientSize = new System.Drawing.Size(470, 353);
             this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.lblUsername);
             this.Controls.Add(this.txtUsername);

@@ -193,9 +193,7 @@ BEGIN
   -- Chống race condition khi cập nhật Warehouse
   EXEC sp_getapplock 
        @Resource = N'WAREHOUSE_LOCK',
-       @LockMode = 'Exclusive',
-       @LockOwner = 'Session',
-       @LockTimeout = 10000;
+       @LockMode = 'Exclusive',a
 
   BEGIN TRY
     BEGIN TRAN;

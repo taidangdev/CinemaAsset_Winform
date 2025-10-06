@@ -177,11 +177,7 @@ namespace CinameAsset
             ShowUserManagementForm();
         }
 
-        private void ShowUserProfileForm()
-        {
-            UserProfileForm profileForm = new UserProfileForm();
-            OpenChildForm(profileForm);
-        }
+   
 
 
         // Helper method để show RBAC status cho debugging

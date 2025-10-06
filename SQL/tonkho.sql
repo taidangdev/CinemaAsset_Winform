@@ -2,7 +2,7 @@
 go
 
 
--- Function duy nhất thay thế cho vw_WarehouseStatus và fn_WarehouseFilter
+-- Function 
 CREATE OR ALTER FUNCTION dbo.fn_WarehouseReport
 (
   @only_low BIT        = NULL,          -- 1: chỉ LOW, 0: tất cả
@@ -56,7 +56,6 @@ CREATE OR ALTER PROCEDURE dbo.sp_Warehouse_ReorderSuggestion
 AS
 BEGIN
     SET NOCOUNT ON;
-
     /*
       Logic:
       - Lấy tất cả mặt hàng trong Warehouse có stock_qty < min_stock
@@ -64,7 +63,6 @@ BEGIN
       - Gợi ý số lượng nhập = thiếu (có thể cộng thêm % buffer nếu bạn muốn)
       - Lấy danh sách vendor có thể cung cấp từ VendorCatalog
     */
-
     SELECT
         at.asset_type_id,
         at.name AS asset_type_name,
